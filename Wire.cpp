@@ -1,4 +1,4 @@
-#include "Wire.h"
+#include "wire.h"
 
 Wire::Wire()
 {

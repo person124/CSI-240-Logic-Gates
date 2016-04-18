@@ -1,4 +1,4 @@
-#include "Component.h"
+#include "component.h"
 
 Component::Component() {
 	isCharged = disconected;
