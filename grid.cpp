@@ -23,11 +23,21 @@ Grid::~Grid()
     delete mGrid;
 }
 
-Component Grid::get(int x, int y)
+Component& Grid::get(int x, int y)
 {
     if (x < 0 || y < 0 || x >= mWidth || y >= mHeight)
         return Component(); //Need a Null Component
     return mGrid[x][y];
+}
+
+int Grid::getWidth()
+{
+	return mWidth;
+}
+
+int Grid::getHeight()
+{
+	return mHeight;
 }
 
 bool Grid::remove(int x, int y)
