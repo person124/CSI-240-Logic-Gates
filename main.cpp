@@ -2,16 +2,14 @@
 
 int main()
 {
-    // create linked list of dynamic arrays
-    int layer = 0;
-    int sizeX = 0;
-    int sizeY = 0;
+    Layer layer;
 
     Command command;
 
     do
     {
         utls::clear(); // Windows only
+        // implement cross-platform solution for clearing terminal
 
         displayGrid();
         displayCommands();
@@ -39,9 +37,13 @@ int main()
         case RUN:
             break;
 
+        case CLEAR:
+            break;
+
         default:
             command.mType = NONE;
         }
+
         command = Command();
     }
     while (command.mType != QUIT);

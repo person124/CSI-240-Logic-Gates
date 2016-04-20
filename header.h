@@ -7,18 +7,25 @@
 #include <string>
 #include "Utilities.h"
 
+#include "grid.h"
+#include "layer.h"
+#include "component.h"
+#include "start.h"
+#include "wire.h"
+#include "light.h"
+
 using namespace std;
 
 const int    COMMAND_SIZE = 7;
 const string COMMAND_NAME[COMMAND_SIZE]
 {
-    "Add",
-    "Remove",
-    "Up",
-    "Down",
-    "Run",
-    "Clear",
-    "Quit"
+    "ADD",
+    "REMOVE",
+    "UP",
+    "DOWN",
+    "RUN",
+    "CLEAR",
+    "QUIT"
 };
 enum CommandType
 {
@@ -35,18 +42,20 @@ enum CommandType
     NONE
 };
 
-const int    COMPONENT_SIZE = 3;
+const int    COMPONENT_SIZE = 4;
 const string COMPONENT_NAME[COMPONENT_SIZE]
 {
-    "Power",
-    "Wire",
-    "Light",
+    "POWER",
+    "WIRE",
+    "WIRE V",
+    "LIGHT",
 };
 enum ComponentType
 {
     /* Valid as input */
     POWER,
     WIRE,
+    WIRE_V,
     LIGHT,
 
     /* Invalid as input */
