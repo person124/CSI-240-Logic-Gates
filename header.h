@@ -79,6 +79,7 @@ void removeComponent(const Command command);
 
 Command     getCommand();
 CommandType getCommandType(stringstream &ss);
+ComponentType getComponentType(stringstream &ss);
 int         getPosition(stringstream &ss, const int bound);
 
 #endif

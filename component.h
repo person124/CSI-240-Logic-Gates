@@ -9,7 +9,7 @@ enum Charge
 
 enum ComponentID
 {
-	wire, verticalWire, light, start
+	wire, verticalWire, light, power
 };
 
 struct position
@@ -34,6 +34,9 @@ public:
 	void acceptInputWest();
 
 	void setLocation(int x, int y);
+
+	void setCharged(Charge);
+
 
 	Charge getCharge();
 
