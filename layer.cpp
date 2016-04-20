@@ -37,6 +37,26 @@ void Layer::add(int num, Grid& g)
     }
 }
 
+void Layer::dequeue()
+{
+    if (mHead == NULL)
+        return;
+    if (mHead == mTail)
+        mHead = NULL;
+
+    Node* temp = mHead;
+    Node* toDel = mTail;
+    while (temp->mNext != mTail)
+        temp = temp->mNext;
+
+    temp->mNext = NULL;
+    mTail = temp;
+
+    delete toDel;
+
+    mCount--;
+}
+
 Grid* Layer::get(int num)
 {
     if (num < 0 || num >= mCount)
@@ -87,36 +107,24 @@ void Layer::enqueue(Grid& g)
 
 void Layer::remove(int num)
 {
-    if (mHead == NULL)
-        return;
-
-    Node* temp = mHead;
-    Node* pre = NULL;
-    for (int i = 1; i < num; i++)
-    {
-        pre = temp;
-        temp = temp->mNext;
-    }
-
-    if (temp == mHead)
-    {
-        if (temp == mTail)
-            mTail = NULL;
-        delete temp;
-        mHead = NULL;
-    }
-    else if (temp == mTail)
-    {
-        mTail = pre;
-        pre->mNext = NULL;
-        delete temp;
-    }
+    if (num == 0)
+        pop();
+    else if (num >= mCount)
+        dequeue();
     else
     {
+        Node* temp = mHead;
+        Node* pre = NULL;
+        for (int i = 1; i < num; i++)
+        {
+            pre = NULL;
+            temp = temp->mNext;
+        }
+
         pre->mNext = temp->mNext;
         temp->mNext = NULL;
         delete temp;
-    }
 
-    mCount--;
+        mCount--;
+    }
 }

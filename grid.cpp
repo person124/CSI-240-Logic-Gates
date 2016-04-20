@@ -1,11 +1,5 @@
 #include "grid.h"
 
-int main()
-{
-    Grid* g = new Grid();
-    delete g;
-}
-
 Grid::Grid(int w, int h)
 {
     mWidth = w;
@@ -23,10 +17,10 @@ Grid::~Grid()
     delete mGrid;
 }
 
-Component& Grid::get(int x, int y)
+Component Grid::get(int x, int y)
 {
     if (x < 0 || y < 0 || x >= mWidth || y >= mHeight)
-        return Component(); //Need a Null Component
+        return Component();
     return mGrid[x][y];
 }
 
@@ -44,7 +38,7 @@ bool Grid::remove(int x, int y)
 {
     if (x < 0 || y < 0 || x >= mWidth || x >= mHeight)
         return false;
-    mGrid[x][y] = Component(); //Null Component
+    mGrid[x][y] = Component();
     return true;
 }
 

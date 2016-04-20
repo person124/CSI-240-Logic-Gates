@@ -29,6 +29,7 @@ class Layer
         Layer();
         ~Layer();
         void add(int, Grid&);
+        void dequeue();
         Grid* get(int);
         void push(Grid&);
         void pop();
