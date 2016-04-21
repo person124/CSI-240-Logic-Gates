@@ -16,9 +16,9 @@ class Layer
                 mData = NULL;
                 mNext = NULL;
             }
-            Node(Grid& g)
+            Node(Grid* g)
             {
-                *mData = g;
+                mData = g;
                 mNext = NULL;
             }
         };
@@ -28,14 +28,14 @@ class Layer
     public:
         Layer();
         ~Layer();
-        void add(int, Grid&);
+        void add(int, Grid*);
         void dequeue();
         Grid* get(int);
 		int getCount();
 		int getCurrentLayer();
-        void push(Grid&);
+        void push(Grid*);
         void pop();
-        void enqueue(Grid&);
+        void enqueue(Grid*);
         void remove(int);
 };
 

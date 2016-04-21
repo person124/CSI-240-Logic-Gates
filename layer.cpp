@@ -5,7 +5,7 @@ Layer::Layer()
     mCount = 0;
     mHead = NULL;
 	mCurrent = 0;
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 2; i++)
 		push(new Grid());
 }
 
@@ -20,7 +20,7 @@ Layer::~Layer()
     }
 }
 
-void Layer::add(int num, Grid& g)
+void Layer::add(int num, Grid* g)
 {
     if (num <= 0)
         push(g);
@@ -60,6 +60,14 @@ void Layer::dequeue()
     mCount--;
 }
 
+void Layer::enqueue(Grid* g)
+{
+    Node* temp = new Node(g);
+    mTail->mNext = temp;
+    mTail = temp;
+    mCount++;
+}
+
 Grid* Layer::get(int num)
 {
     if (num < 0 || num >= mCount)
@@ -84,7 +92,7 @@ int Layer::getCurrentLayer()
 	return mCurrent;
 }
 
-void Layer::push(Grid& g)
+void Layer::push(Grid* g)
 {
     if (mHead == NULL)
     {
@@ -110,14 +118,6 @@ void Layer::pop()
     mHead = temp->mNext;
     delete temp;
     mCount--;
-}
-
-void Layer::enqueue(Grid& g)
-{
-    Node* temp = new Node(g);
-    mTail->mNext = temp;
-    mTail = temp;
-    mCount++;
 }
 
 void Layer::remove(int num)
@@ -149,7 +149,7 @@ Grid* operator++(Layer& l)
 	Grid* temp = l.get(l.getCurrentLayer() + 1);
 	if (temp == NULL)
 	{
-		l.queue(new Grid());
+		l.enqueue(new Grid());
 		temp = l.get(l.getCount() - 1);
 	}
 	return temp;
