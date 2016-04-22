@@ -4,6 +4,9 @@ Layer::Layer()
 {
     mCount = 0;
     mHead = NULL;
+	mCurrent = 0;
+	for (int i = 0; i < 3; i++)
+		push(new Grid());
 }
 
 Layer::~Layer()
@@ -19,7 +22,7 @@ Layer::~Layer()
 
 void Layer::add(int num, Grid& g)
 {
-    if (num == 0)
+    if (num <= 0)
         push(g);
     else if (num >= mCount)
         enqueue(g);
@@ -37,6 +40,26 @@ void Layer::add(int num, Grid& g)
     }
 }
 
+void Layer::dequeue()
+{
+    if (mHead == NULL)
+        return;
+    if (mHead == mTail)
+        mHead = NULL;
+
+    Node* temp = mHead;
+    Node* toDel = mTail;
+    while (temp->mNext != mTail)
+        temp = temp->mNext;
+
+    temp->mNext = NULL;
+    mTail = temp;
+
+    delete toDel;
+
+    mCount--;
+}
+
 Grid* Layer::get(int num)
 {
     if (num < 0 || num >= mCount)
@@ -45,8 +68,20 @@ Grid* Layer::get(int num)
     Node* temp = mHead;
     for (int i = 1; i < num; i++)
         temp = temp->mNext;
+	
+	mCurrent = num;
 
     return temp->mData;
+}
+
+int Layer::getCount()
+{
+	return mCount;
+}
+
+int Layer::getCurrentLayer()
+{
+	return mCurrent;
 }
 
 void Layer::push(Grid& g)
@@ -87,36 +122,46 @@ void Layer::enqueue(Grid& g)
 
 void Layer::remove(int num)
 {
-    if (mHead == NULL)
-        return;
-
-    Node* temp = mHead;
-    Node* pre = NULL;
-    for (int i = 1; i < num; i++)
-    {
-        pre = temp;
-        temp = temp->mNext;
-    }
-
-    if (temp == mHead)
-    {
-        if (temp == mTail)
-            mTail = NULL;
-        delete temp;
-        mHead = NULL;
-    }
-    else if (temp == mTail)
-    {
-        mTail = pre;
-        pre->mNext = NULL;
-        delete temp;
-    }
+    if (num <= 0)
+        pop();
+    else if (num >= mCount)
+        dequeue();
     else
     {
+        Node* temp = mHead;
+        Node* pre = NULL;
+        for (int i = 1; i < num; i++)
+        {
+            pre = NULL;
+            temp = temp->mNext;
+        }
+
         pre->mNext = temp->mNext;
         temp->mNext = NULL;
         delete temp;
-    }
 
-    mCount--;
+        mCount--;
+    }
+}
+
+Grid* operator++(Layer& l)
+{
+	Grid* temp = l.get(l.getCurrentLayer() + 1);
+	if (temp == NULL)
+	{
+		l.queue(new Grid());
+		temp = l.get(l.getCount() - 1);
+	}
+	return temp;
+}
+
+Grid* operator--(Layer& l)
+{
+	Grid* temp = l.get(l.getCurrentLayer() - 1);
+	if (temp == NULL)
+	{
+		l.push(new Grid());
+		temp = l.get(0);
+	}
+	return temp;
 }

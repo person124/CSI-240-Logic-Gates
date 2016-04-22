@@ -24,16 +24,22 @@ class Layer
         };
         Node* mHead;
         Node* mTail;
-        int mCount;
+        int mCount, mCurrent;
     public:
         Layer();
         ~Layer();
         void add(int, Grid&);
+        void dequeue();
         Grid* get(int);
+		int getCount();
+		int getCurrentLayer();
         void push(Grid&);
         void pop();
         void enqueue(Grid&);
         void remove(int);
 };
+
+Grid* operator++(Layer&);
+Grid* operator--(Layer&);
 
 #endif

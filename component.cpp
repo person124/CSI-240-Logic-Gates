@@ -84,3 +84,7 @@ Charge Component::getOutputCharge()
 {
 	return isCharged;
 }
+
+void Component::setCharged(Charge ch){
+	isCharged = ch;
+}

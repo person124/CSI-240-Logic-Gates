@@ -1,11 +1,11 @@
 #pragma once
 #include "component.h"
 
-class Start : Component
+class Power : Component
 {
 public:
-	Start();
-	~Start();
+	Power();
+	~Power();
 
 private:
 

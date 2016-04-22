@@ -1,6 +1,6 @@
-#include "start.h"
+#include "power.h"
 
-Start::Start()
+Power::Power()
 {
 	isCharged = charged;
 	outputEast = true;
@@ -9,6 +9,6 @@ Start::Start()
 	outputWest = true;
 }
 
-Start::~Start()
+Power::~Power()
 {
 }
