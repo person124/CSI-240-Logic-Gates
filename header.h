@@ -86,8 +86,9 @@ void layerUp(const Command command, const int &layer);
 void layerDown(const Command command, const int &layer);
 void removeComponent(const Command command);
 
-Command     getCommand();
-CommandType getCommandType(stringstream &ss);
-int         getPosition(stringstream &ss, const int bound);
+Command       getCommand(int xWidth, int yWidth);
+CommandType   getCommandType(stringstream &ss);
+ComponentType getComponentType(stringstream &ss);
+int           getPosition(stringstream &ss, const int bound);
 
 #endif

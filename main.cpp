@@ -3,13 +3,16 @@
 int main()
 {
     Layer layer;
-
     Command command;
+
+    int currentLayer = 0;
+    int layerCount   = 0;
+    int xWidth       = 0;
+    int yWidth       = 0;
 
     do
     {
-        utls::clear(); // Windows only
-        // implement cross-platform solution for clearing terminal
+        utls::clear();
 
         displayGrid();
         displayCommands();
@@ -17,7 +20,7 @@ int main()
         switch (command.mType)
         {
         case NONE:
-            command = getCommand();
+            command = getCommand(xWidth, yWidth);
             break;
 
         case ADD:

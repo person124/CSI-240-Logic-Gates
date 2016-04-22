@@ -37,7 +37,7 @@ void displayComponents()
     cout << endl;
 }
 
-Command getCommand()
+Command getCommand(int xWidth, int yWidth)
 {
     Command      tmp;
     string       input = "";
@@ -57,15 +57,15 @@ Command getCommand()
     case ADD:
         /* Get component type, x position, and y position */
         tmp.mComponent = getComponentType(ss);
-        tmp.mParameter1 = getPosition(ss, 0); // pass x width limit
-        tmp.mParameter2 = getPosition(ss, 0); // pass y height limit
+        tmp.mParameter1 = getPosition(ss, xWidth); // pass x width limit
+        tmp.mParameter2 = getPosition(ss, yWidth); // pass y height limit
 
         break;
 
     case REMOVE:
         /* Get x position and y position */
-        tmp.mParameter1 = getPosition(ss, 0); // pass x width limit
-        tmp.mParameter2 = getPosition(ss, 0); // pass y height limit
+        tmp.mParameter1 = getPosition(ss, xWidth); // pass x width limit
+        tmp.mParameter2 = getPosition(ss, yWidth); // pass y height limit
 
         break;
 
