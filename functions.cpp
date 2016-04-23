@@ -1,18 +1,69 @@
 #include "header.h"
 
-void addComponent(const Command command)
+void addComponent(Layer &layer, stringstream &ss)
 {
-    
+    string        data = "";
+    ComponentType component = EMPTY;
+    int           xPos = -1;
+    int           yPos = -1;
+
+    /* Read component type */
+    component = getComponentType(ss);
+    if (component == EMPTY)
+    {
+        return;
+    }
+
+    /* Read x position */
+    ss >> data;
+    if (utls::isDigit(data))
+    {
+        xPos = stoi(data);
+
+        /* Validate x position */
+        if (xPos < 0 || xPos > xSize)
+        {
+            return;
+        }
+    }
+    else
+    {
+        return;
+    }
+
+    /* Read y position */
+    ss >> data;
+    if (utls::isDigit(data))
+    {
+        yPos = stoi(data);
+
+        /* Validate y position */
+        if (yPos < 0 || yPos > ySize)
+        {
+            return;
+        }
+    }
+    else
+    {
+        return;
+    }
+
+    /* Check for junk */
+    ss >> data;
+    if (!data.empty())
+    {
+        return;
+    }
 }
 
 
-void displayGrid()
+void displayGrid(Layer &layer)
 {
     for (int i = 0; i < 0; i++)
     {
         for (int j = 0; j < 0; j++)
         {
-            // display current grid tile
+            
         }
         cout << endl;
     }
@@ -32,79 +83,33 @@ void displayComponents()
 {
     for (int i = 0; i < COMPONENT_SIZE; i++)
     {
-        cout << COMPONENT_NAME[i] << "\t";
+        cout << right << setw(15) << COMPONENT_NAME[i];
     }
     cout << endl;
 }
 
-Command getCommand(int xWidth, int yWidth)
+void getInput(stringstream &ss)
 {
-    Command      tmp;
-    string       input = "";
-    stringstream ss;
+    string input = "";
 
-    /* Get command input from user */
     cout << "Enter command:  ";
+
     getline(cin, input);
     input = utls::toUpper(input);
+
     getline(ss, input);
-
-    /* Read command type */
-    tmp.mType = getCommandType(ss);
-
-    switch (tmp.mType)
-    {
-    case ADD:
-        /* Get component type, x position, and y position */
-        tmp.mComponent = getComponentType(ss);
-        tmp.mParameter1 = getPosition(ss, xWidth); // pass x width limit
-        tmp.mParameter2 = getPosition(ss, yWidth); // pass y height limit
-
-        break;
-
-    case REMOVE:
-        /* Get x position and y position */
-        tmp.mParameter1 = getPosition(ss, xWidth); // pass x width limit
-        tmp.mParameter2 = getPosition(ss, yWidth); // pass y height limit
-
-        break;
-
-    case UP:
-        /* Get up amount */
-        tmp.mParameter1 = getPosition(ss, 0); // pass LL upwards limit
-
-        /* Default is 1 */
-        if (tmp.mParameter1 == -1)
-        {
-            tmp.mParameter1 = 1;
-        }
-
-        break;
-
-    case DOWN:
-        /* Get down amount */
-        tmp.mParameter1 = getPosition(ss, 0); // pass LL downwards limit
-
-        /* Default is 1 */
-        if (tmp.mParameter1 == -1)
-        {
-            tmp.mParameter1 = 1;
-        }
-
-        break;
-    }
 }
 
 CommandType getCommandType(stringstream &ss)
 {
-    CommandType type  = NONE;
-    string      input = "";
+    CommandType type  = ENTRY;
+    string      data  = "";
 
-    ss >> input;
+    ss >> data;
 
     for (int i = 0; i < COMMAND_SIZE; i++)
     {
-        if (COMMAND_NAME[i] == input)
+        if (COMMAND_NAME[i] == data)
         {
             type = static_cast<CommandType>(i);
         }
@@ -129,34 +134,60 @@ ComponentType getComponentType(stringstream &ss)
     return type;
 }
 
-int getPosition(stringstream &ss, const int bound)
+void layerUp()
 {
-    int    position = -1;
-    string input    = "";
+    // validate parameter
+}
 
-    input = utls::getInput();
+void layerDown()
+{
+    // validate parameter
+}
 
-    if (utls::isDigit(input))
+void removeComponent(Layer &layer, stringstream &ss)
+{
+    string        data = "";
+    int           xPos = -1;
+    int           yPos = -1;
+
+    /* Read x position */
+    ss >> data;
+    if (utls::isDigit(data))
     {
-        if (stoi(input) >= 0 && position <= bound)
+        xPos = stoi(data);
+
+        /* Validate x position */
+        if (xPos < 0 || xPos > xSize)
         {
-            position = stoi(input);
+            return;
         }
     }
-    return position;
-}
+    else
+    {
+        return;
+    }
 
-void layerUp(const Command command, const int &layer)
-{
-    // validate parameter
-}
+    /* Read y position */
+    ss >> data;
+    if (utls::isDigit(data))
+    {
+        yPos = stoi(data);
 
-void layerDown(const Command command, const int &layer)
-{
-    // validate parameter
-}
+        /* Validate y position */
+        if (yPos < 0 || yPos > ySize)
+        {
+            return;
+        }
+    }
+    else
+    {
+        return;
+    }
 
-void removeComponent(const Command command)
-{
-    // check that command parameters are valid
+    /* Check for junk */
+    ss >> data;
+    if (!data.empty())
+    {
+        return;
+    }
 }

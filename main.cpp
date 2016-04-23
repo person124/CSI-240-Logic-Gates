@@ -3,32 +3,32 @@
 int main()
 {
     Layer layer;
-    Command command;
-
-    int currentLayer = 0;
-    int layerCount   = 0;
-    int xWidth       = 0;
-    int yWidth       = 0;
+    CommandType destination = SETUP;
+    stringstream ss;
 
     do
     {
         utls::clear();
 
-        displayGrid();
+        displayGrid(layer);
         displayCommands();
 
-        switch (command.mType)
+        switch (destination)
         {
-        case NONE:
-            command = getCommand(xWidth, yWidth);
+        case SETUP:
+            break;
+
+        case ENTRY:
+            getInput(ss);
+            destination = getCommandType(ss);
             break;
 
         case ADD:
-            addComponent(command);
+            addComponent(layer, ss);
             break;
 
         case REMOVE:
-            removeComponent(command);
+            removeComponent(layer, ss);
             break;
 
         case UP:
@@ -40,16 +40,13 @@ int main()
         case RUN:
             break;
 
-        case CLEAR:
-            break;
-
         default:
-            command.mType = NONE;
+            destination = SETUP;;
         }
 
-        command = Command();
+        destination = ENTRY;
     }
-    while (command.mType != QUIT);
+    while (destination != QUIT);
 
     return 0;
 }

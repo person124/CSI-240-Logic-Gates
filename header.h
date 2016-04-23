@@ -24,7 +24,7 @@ const string COMMAND_NAME[COMMAND_SIZE]
     "UP",
     "DOWN",
     "RUN",
-    "CLEAR",
+    "SETUP",
     "QUIT"
 };
 enum CommandType
@@ -35,11 +35,11 @@ enum CommandType
     UP,
     DOWN,
     RUN,
-    CLEAR,
+    SETUP,
     QUIT,
 
     /* Invalid as input */
-    NONE
+    ENTRY
 };
 
 const int    COMPONENT_SIZE = 4;
@@ -62,33 +62,17 @@ enum ComponentType
     EMPTY
 };
 
-struct Command
-{
-    CommandType   mType;
-    ComponentType mComponent;
-    int           mParameter1;
-    int           mParameter2;
-
-    Command()
-    {
-        mType       = NONE;
-        mComponent  = EMPTY;
-        mParameter1 = -1;
-        mParameter2 = -1;
-    }
-};
-
-void addComponent(const Command command);
-void displayGrid();
+void addComponent(Layer &layer, stringstream &ss);
+void displayGrid(Layer &layer);
 void displayCommands();
 void displayComponents();
-void layerUp(const Command command, const int &layer);
-void layerDown(const Command command, const int &layer);
-void removeComponent(const Command command);
+void layerUp();
+void layerDown();
+void removeComponent(Layer &layer, stringstream &ss);
 
-Command       getCommand(int xWidth, int yWidth);
+void getInput(stringstream &ss);
+
 CommandType   getCommandType(stringstream &ss);
 ComponentType getComponentType(stringstream &ss);
-int           getPosition(stringstream &ss, const int bound);
 
 #endif
