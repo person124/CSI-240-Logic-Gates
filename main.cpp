@@ -3,7 +3,7 @@
 int main()
 {
     Layer layer;
-    CommandType destination = SETUP;
+    CommandType destination = NEW;
     stringstream ss;
 
     do
@@ -15,7 +15,9 @@ int main()
 
         switch (destination)
         {
-        case SETUP:
+        case NEW:
+            getInput(ss);
+            destination = setup(layer, ss);
             break;
 
         case ENTRY:
@@ -32,18 +34,22 @@ int main()
             break;
 
         case UP:
+            layerUp(layer, ss);
             break;
 
         case DOWN:
+            layerDown(layer, ss);
             break;
 
         case RUN:
+            // run
             break;
 
         default:
-            destination = SETUP;;
+            destination = NEW;
         }
 
+        ss.clear();
         destination = ENTRY;
     }
     while (destination != QUIT);

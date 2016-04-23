@@ -24,7 +24,7 @@ const string COMMAND_NAME[COMMAND_SIZE]
     "UP",
     "DOWN",
     "RUN",
-    "SETUP",
+    "NEW",
     "QUIT"
 };
 enum CommandType
@@ -35,7 +35,7 @@ enum CommandType
     UP,
     DOWN,
     RUN,
-    SETUP,
+    NEW,
     QUIT,
 
     /* Invalid as input */
@@ -66,13 +66,14 @@ void addComponent(Layer &layer, stringstream &ss);
 void displayGrid(Layer &layer);
 void displayCommands();
 void displayComponents();
-void layerUp();
-void layerDown();
+void layerUp(Layer &layer, stringstream &ss);
+void layerDown(Layer &layer, stringstream &ss);
 void removeComponent(Layer &layer, stringstream &ss);
 
 void getInput(stringstream &ss);
 
 CommandType   getCommandType(stringstream &ss);
 ComponentType getComponentType(stringstream &ss);
+CommandType   setup(Layer &layer, stringstream &ss);
 
 #endif

@@ -134,21 +134,73 @@ ComponentType getComponentType(stringstream &ss)
     return type;
 }
 
-void layerUp()
+void layerUp(Layer &layer, stringstream &ss)
 {
-    // validate parameter
+    string data = "";
+    int    amount = 0;
+
+    /* Read amount */
+    ss >> data;
+    if (utls::isDigit(data))
+    {
+        amount = stoi(data);
+
+        if (0 /* can't move up */)
+        {
+            return;
+        }
+    }
+    else
+    {
+        return;
+    }
+
+    /* Check for junk */
+    ss >> data;
+    if (!data.empty())
+    {
+        return;
+    }
+
+    // change layer here
 }
 
-void layerDown()
+void layerDown(Layer &layer, stringstream &ss)
 {
-    // validate parameter
+    string data = "";
+    int    amount = 0;
+
+    /* Read amount */
+    ss >> data;
+    if (utls::isDigit(data))
+    {
+        amount = stoi(data);
+
+        if (0 /* can't move down */)
+        {
+            return;
+        }
+    }
+    else
+    {
+        return;
+    }
+
+    /* Check for junk */
+    ss >> data;
+    if (!data.empty())
+    {
+        return;
+    }
+
+    // change layer here
 }
 
 void removeComponent(Layer &layer, stringstream &ss)
 {
-    string        data = "";
-    int           xPos = -1;
-    int           yPos = -1;
+    string data = "";
+    int    xPos = -1;
+    int    yPos = -1;
 
     /* Read x position */
     ss >> data;
@@ -190,4 +242,49 @@ void removeComponent(Layer &layer, stringstream &ss)
     {
         return;
     }
+
+    // remove component
+}
+
+CommandType setup(Layer &layer, stringstream &ss)
+{
+    CommandType destination = NEW;
+    string      data        = "";
+    int         xSize       = 0;
+    int         ySize       = 0;
+
+    /* Read x position */
+    ss >> data;
+    if (utls::isDigit(data))
+    {
+        xSize = stoi(data);
+    }
+    else
+    {
+        return destination;
+    }
+
+    /* Read y position */
+    ss >> data;
+    if (utls::isDigit(data))
+    {
+        ySize = stoi(data);
+    }
+    else
+    {
+        return destination;
+    }
+
+    /* Check for junk */
+    ss >> data;
+    if (!data.empty())
+    {
+        return destination;
+    }
+
+    // set the width and height
+
+    destination = ENTRY;
+
+    return destination;
 }
