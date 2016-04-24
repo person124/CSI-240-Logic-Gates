@@ -90,13 +90,12 @@ void addComponent(Layer &layer, stringstream &ss);
 void displayGrid(Layer &layer);
 void displayCommands();
 void displayComponents();
+CommandType getCommandType(stringstream &ss);
+ComponentType getComponentType(stringstream &ss);
 void getInput(stringstream &ss);
 void layerUp(Layer &layer, stringstream &ss);
 void layerDown(Layer &layer, stringstream &ss);
 void removeComponent(Layer &layer, stringstream &ss);
-
-CommandType   getCommandType(stringstream &ss);
-ComponentType getComponentType(stringstream &ss);
-CommandType   setup(Layer &layer, stringstream &ss);
+CommandType setup(Layer &layer, stringstream &ss);
 
 #endif

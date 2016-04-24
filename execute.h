@@ -7,6 +7,6 @@
 
 void execute(Layer&, StartingList&);
 void invokeStart(Layer&, StartingPos*, Component&, Charge);
-void invokeLight(Layer&, int, int, int, Charge)
+void invokeLight(Layer&, int, int, int, Charge);
 
 #endif
