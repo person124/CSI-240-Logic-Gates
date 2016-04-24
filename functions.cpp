@@ -21,7 +21,7 @@ void addComponent(Layer &layer, stringstream &ss)
         xPos = stoi(data);
 
         /* Validate x position */
-        if (xPos < 0 || xPos > xSize)
+        if (xPos < 0 || xPos > layer.get(layer.getCurrentLayer())->getWidth())
         {
             return;
         }
@@ -38,7 +38,7 @@ void addComponent(Layer &layer, stringstream &ss)
         yPos = stoi(data);
 
         /* Validate y position */
-        if (yPos < 0 || yPos > ySize)
+        if (yPos < 0 || yPos > layer.get(layer.getCurrentLayer())->getHeight())
         {
             return;
         }
@@ -59,11 +59,22 @@ void addComponent(Layer &layer, stringstream &ss)
 
 void displayGrid(Layer &layer)
 {
-    for (int i = 0; i < 0; i++)
+    Component tmp;
+
+    for (int i = 0; i < layer.get(layer.getCurrentLayer())->getHeight(); i++)
     {
-        for (int j = 0; j < 0; j++)
+        for (int j = 0; j < layer.get(layer.getCurrentLayer())->getWidth(); j++)
         {
-            
+            tmp = layer.get(layer.getCurrentLayer())->get(i, j);
+
+            if (tmp.getCharge() == charged)
+            {
+                cout << COMPONENT_ON[static_cast<int>(tmp.getComponentID)];
+            }
+            else
+            {
+                cout << COMPONENT_OFF[static_cast<int>(tmp.getComponentID)];
+            }
         }
         cout << endl;
     }
@@ -209,7 +220,7 @@ void removeComponent(Layer &layer, stringstream &ss)
         xPos = stoi(data);
 
         /* Validate x position */
-        if (xPos < 0 || xPos > xSize)
+        if (xPos < 0 || xPos > layer.get(layer.getCurrentLayer())->getWidth())
         {
             return;
         }
@@ -226,7 +237,7 @@ void removeComponent(Layer &layer, stringstream &ss)
         yPos = stoi(data);
 
         /* Validate y position */
-        if (yPos < 0 || yPos > ySize)
+        if (yPos < 0 || yPos > layer.get(layer.getCurrentLayer())->getHeight())
         {
             return;
         }
@@ -248,12 +259,14 @@ void removeComponent(Layer &layer, stringstream &ss)
 
 CommandType setup(Layer &layer, stringstream &ss)
 {
+    return ENTRY;
+
     CommandType destination = NEW;
     string      data        = "";
     int         xSize       = 0;
     int         ySize       = 0;
 
-    /* Read x position */
+    /* Read x size */
     ss >> data;
     if (utls::isDigit(data))
     {
@@ -264,7 +277,7 @@ CommandType setup(Layer &layer, stringstream &ss)
         return destination;
     }
 
-    /* Read y position */
+    /* Read y size */
     ss >> data;
     if (utls::isDigit(data))
     {
@@ -283,8 +296,6 @@ CommandType setup(Layer &layer, stringstream &ss)
     }
 
     // set the width and height
-
-    destination = ENTRY;
 
     return destination;
 }

@@ -61,6 +61,28 @@ enum ComponentType
     /* Invalid as input */
     EMPTY
 };
+const string COMPONENT_OFF[COMPONENT_SIZE + 1]
+{
+    /* Valid as input */
+    " P ",
+    " + ",
+    "[+]",
+    " . ",
+
+    /* Invalid as input */
+    "   "
+};
+const string COMPONENT_ON[COMPONENT_SIZE + 1]
+{
+    /* Valid as input */
+    " P ",
+    " * ",
+    "[*]",
+    " ! ",
+
+    /* Invalid as input */
+    "   "
+};
 
 void addComponent(Layer &layer, stringstream &ss);
 void displayGrid(Layer &layer);
