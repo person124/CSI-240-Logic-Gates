@@ -2,6 +2,7 @@
 
 void addComponent(Layer &layer, stringstream &ss)
 {
+    Component     tmp;
     string        data = "";
     ComponentType component = EMPTY;
     int           xPos = -1;
@@ -54,6 +55,8 @@ void addComponent(Layer &layer, stringstream &ss)
     {
         return;
     }
+
+    // Actually add the component
 }
 
 
@@ -69,11 +72,11 @@ void displayGrid(Layer &layer)
 
             if (tmp.getCharge() == charged)
             {
-                cout << COMPONENT_ON[static_cast<int>(tmp.getComponentID)];
+                //cout << COMPONENT_ON[static_cast<int>(tmp.getComponentID()];
             }
             else
             {
-                cout << COMPONENT_OFF[static_cast<int>(tmp.getComponentID)];
+                //cout << COMPONENT_OFF[static_cast<int>(tmp.getComponentID()];
             }
         }
         cout << endl;
@@ -156,7 +159,7 @@ void layerUp(Layer &layer, stringstream &ss)
     {
         amount = stoi(data);
 
-        if (0 /* can't move up */)
+        if (layer.getCurrentLayer() == layer.getCount())
         {
             return;
         }
@@ -187,7 +190,7 @@ void layerDown(Layer &layer, stringstream &ss)
     {
         amount = stoi(data);
 
-        if (0 /* can't move down */)
+        if (layer.getCurrentLayer() == 0)
         {
             return;
         }
@@ -254,7 +257,7 @@ void removeComponent(Layer &layer, stringstream &ss)
         return;
     }
 
-    // remove component
+    // Actually remove the component
 }
 
 CommandType setup(Layer &layer, stringstream &ss)
@@ -295,7 +298,7 @@ CommandType setup(Layer &layer, stringstream &ss)
         return destination;
     }
 
-    // set the width and height
+    // Actually set the width and height
 
     return destination;
 }
