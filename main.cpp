@@ -3,6 +3,7 @@
 int main()
 {
     Layer layer;
+    StartingList startingList;
     CommandType destination = NEW;
     stringstream ss;
 
@@ -42,7 +43,7 @@ int main()
             break;
 
         case RUN:
-            // run
+            execute(layer, startingList);
             break;
 
         default:

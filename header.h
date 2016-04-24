@@ -14,6 +14,7 @@
 #include "wire.h"
 #include "light.h"
 #include "execute.h"
+#include "startingPos.h"
 
 using namespace std;
 
@@ -89,11 +90,10 @@ void addComponent(Layer &layer, stringstream &ss);
 void displayGrid(Layer &layer);
 void displayCommands();
 void displayComponents();
+void getInput(stringstream &ss);
 void layerUp(Layer &layer, stringstream &ss);
 void layerDown(Layer &layer, stringstream &ss);
 void removeComponent(Layer &layer, stringstream &ss);
-
-void getInput(stringstream &ss);
 
 CommandType   getCommandType(stringstream &ss);
 ComponentType getComponentType(stringstream &ss);
