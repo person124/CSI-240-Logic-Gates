@@ -6,6 +6,7 @@
 #include "startingPos.h"
 
 void execute(Layer&, StartingList&);
-void invoke(Component&, Charge);
+void invokeStart(Layer&, StartingPos*, Component&, Charge);
+void invokeLight(Layer&, int, int, int, Charge)
 
 #endif

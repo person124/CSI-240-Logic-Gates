@@ -6,11 +6,12 @@ void execute(Layer& layer, StartingList& list)
     {
         StartingPos* pos = list.get(i);
         Component c = layer.get(pos->mL)->get(pos->mX, pos->mY);
-        invoke(c, Charge::charged);
+		invokeStart(layer, pos, c, Charge::charged);
     }
 }
 
-void invoke(Component& c, Charge charge)
+void invokeStart(Layer& layer, StartingPos* pos, Component& c, Charge charge)
 {
     c.setCharged(charge);
+	
 }
