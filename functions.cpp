@@ -9,18 +9,18 @@
  ******************************************************************************/
 void addComponent(Layer &layer, stringstream &ss)
 {
-    Component     tmp;
+    ComponentType type = EMPTY;
     string        data = "";
-    ComponentType component = EMPTY;
     int           xPos = -1;
     int           yPos = -1;
 
     /* Read component type */
-    component = getComponentType(ss);
-    if (component == EMPTY)
+    type = getComponentType(ss);
+    if (type == EMPTY)
     {
         return;
     }
+    data.clear();
 
     /* Read x position */
     ss >> data;
@@ -38,6 +38,7 @@ void addComponent(Layer &layer, stringstream &ss)
     {
         return;
     }
+    data.clear();
 
     /* Read y position */
     ss >> data;
@@ -55,6 +56,7 @@ void addComponent(Layer &layer, stringstream &ss)
     {
         return;
     }
+    data.clear();
 
     /* Check for junk */
     ss >> data;
@@ -62,6 +64,7 @@ void addComponent(Layer &layer, stringstream &ss)
     {
         return;
     }
+    data.clear();
 
     // Actually add the component
 }
@@ -127,6 +130,19 @@ void displayComponents()
 }
 
 
+/* Purpose:  To display a message on the screen and pause the program
+ *     Pre:  Message type
+ *    Post:  Dislays message text on teh screen and pauses the program
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
+void displayMessage(MESSAGE_TYPE code)
+{
+    cout << endl << MESSAGE_TEXT[static_cast<int>(code)] << endl;
+
+    utls::pause();
+}
+
+
 /* Purpose:  To get a line of input from the user
  *     Pre:  Stringstream for storing input
  *    Post:  Stores user input in stringstream
@@ -152,11 +168,10 @@ void getInput(stringstream &ss)
  ******************************************************************************/
 CommandType getCommandType(stringstream &ss)
 {
+    string      data = "";
     CommandType type  = ENTRY;
-    string      data  = "";
 
     ss >> data;
-
     for (int i = 0; i < COMMAND_SIZE; i++)
     {
         if (COMMAND_NAME[i] == data)
@@ -164,6 +179,8 @@ CommandType getCommandType(stringstream &ss)
             type = static_cast<CommandType>(i);
         }
     }
+    data.clear();
+
     return type;
 }
 
@@ -175,18 +192,19 @@ CommandType getCommandType(stringstream &ss)
  ******************************************************************************/
 ComponentType getComponentType(stringstream &ss)
 {
-    ComponentType type  = EMPTY;
-    string        input = "";
+    string        data = "";
+    ComponentType type = EMPTY;
 
-    ss >> input;
-
+    ss >> data;
     for (int i = 0; i < COMPONENT_SIZE; i++)
     {
-        if (COMPONENT_NAME[i] == input)
+        if (COMPONENT_NAME[i] == data)
         {
             type = static_cast<ComponentType>(i);
         }
     }
+    data.clear();
+
     return type;
 }
 
@@ -217,6 +235,7 @@ void layerUp(Layer &layer, stringstream &ss)
     {
         return;
     }
+    data.clear();
 
     /* Check for junk */
     ss >> data;
@@ -224,8 +243,9 @@ void layerUp(Layer &layer, stringstream &ss)
     {
         return;
     }
+    data.clear();
 
-    // change layer here
+    // Actually change layer here
 }
 
 
@@ -255,6 +275,7 @@ void layerDown(Layer &layer, stringstream &ss)
     {
         return;
     }
+    data.clear();
 
     /* Check for junk */
     ss >> data;
@@ -262,8 +283,9 @@ void layerDown(Layer &layer, stringstream &ss)
     {
         return;
     }
+    data.clear();
 
-    // change layer here
+    // Actually change layer here
 }
 
 
@@ -295,6 +317,7 @@ void removeComponent(Layer &layer, stringstream &ss)
     {
         return;
     }
+    data.clear();
 
     /* Read y position */
     ss >> data;
@@ -312,6 +335,7 @@ void removeComponent(Layer &layer, stringstream &ss)
     {
         return;
     }
+    data.clear();
 
     /* Check for junk */
     ss >> data;
@@ -319,6 +343,7 @@ void removeComponent(Layer &layer, stringstream &ss)
     {
         return;
     }
+    data.clear();
 
     // Actually remove the component
 }
@@ -330,14 +355,11 @@ void removeComponent(Layer &layer, stringstream &ss)
  *    Post:  Creates new system with given width and height
  *  Author:  Matthew James Harrison
  ******************************************************************************/
-CommandType setup(Layer &layer, stringstream &ss)
+void setup(Layer &layer, stringstream &ss)
 {
-    return ENTRY;
-
-    CommandType destination = NEW;
-    string      data        = "";
-    int         xSize       = 0;
-    int         ySize       = 0;
+    string data  = "";
+    int    xSize = 0;
+    int    ySize = 0;
 
     /* Read x size */
     ss >> data;
@@ -347,8 +369,9 @@ CommandType setup(Layer &layer, stringstream &ss)
     }
     else
     {
-        return destination;
+        return;
     }
+    data.clear();
 
     /* Read y size */
     ss >> data;
@@ -358,17 +381,17 @@ CommandType setup(Layer &layer, stringstream &ss)
     }
     else
     {
-        return destination;
+        return;
     }
+    data.clear();
 
     /* Check for junk */
     ss >> data;
     if (!data.empty())
     {
-        return destination;
+        return;
     }
+    data.clear();
 
     // Actually set the width and height
-
-    return destination;
 }

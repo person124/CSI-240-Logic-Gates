@@ -27,6 +27,7 @@
 namespace utls
 {
     void        clear         ();
+    void        clearSystem   ();
     std::string getInput      ();
     bool        hasLength     (const std::string   input);
     bool        isAlpha       (const std::string   input);
@@ -41,6 +42,7 @@ namespace utls
     bool        isValidFile   (const std::ofstream &fout);
     bool        isWords       (const std::string   input);
     void        pause         ();
+    void        pauseSystem   ();
     std::string toLower       (const std::string input);
     std::string toUpper       (const std::string input);
 }

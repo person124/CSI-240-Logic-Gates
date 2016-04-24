@@ -4,7 +4,7 @@ int main()
 {
     Layer layer;
     StartingList startingList;
-    CommandType destination = NEW;
+    CommandType destination = ENTRY;
     stringstream ss;
 
     do
@@ -16,11 +16,6 @@ int main()
 
         switch (destination)
         {
-        case NEW:
-            getInput(ss);
-            destination = setup(layer, ss);
-            break;
-
         case ENTRY:
             getInput(ss);
             destination = getCommandType(ss);
@@ -46,8 +41,11 @@ int main()
             execute(layer, startingList);
             break;
 
+        case SETUP:
+            setup(layer, ss);
+
         default:
-            destination = NEW;
+            destination = ENTRY;
         }
 
         ss.clear();

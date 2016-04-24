@@ -19,11 +19,21 @@
 
 #include "Utilities.h"
 
+/* Purpose:  Clear console
+ *     Pre:  None
+ *    Post:  Console cleared
+ *  Source:  http://www.cplusplus.com/forum/beginner/3207/
+ ******************************************************************************/
+void utls::clear()
+{
+    std::cout << std::string(100, '\n');
+}
+
 /* Purpose:  Clear console via system call
  *     Pre:  None
  *    Post:  Console cleared
  ******************************************************************************/
-void utls::clear()
+void utls::clearSystem()
 {
     system("CLS");
 }
@@ -279,11 +289,23 @@ bool utls::isWords(const std::string input)
     return words;
 }
 
+/* Purpose:  Pause the program
+ *     Pre:  None
+ *    Post:  Program is paused until input is received
+ *  Source:  http://stackoverflow.com/questions/5131647/why-would-we-call-cin-clear-and-cin-ignore-after-reading-input
+ ******************************************************************************/
+void utls::pause()
+{
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
 /* Purpose:  Pause the program via system call
  *     Pre:  None
  *    Post:  Program is paused until input is received
+ *  Source:  http://stackoverflow.com/questions/5131647/why-would-we-call-cin-clear-and-cin-ignore-after-reading-input
  ******************************************************************************/
-void utls::pause()
+void utls::pauseSystem()
 {
     system("PAUSE");
 }

@@ -26,21 +26,19 @@ const string COMMAND_NAME[COMMAND_SIZE]
     "UP",
     "DOWN",
     "RUN",
-    "NEW",
+    "SETUP",
     "QUIT"
 };
 enum CommandType
 {
-    /* Valid as input */
     ADD,
     REMOVE,
     UP,
     DOWN,
     RUN,
-    NEW,
+    SETUP,
     QUIT,
 
-    /* Invalid as input */
     ENTRY
 };
 
@@ -86,16 +84,40 @@ const string COMPONENT_ON[COMPONENT_SIZE + 1]
     "   "
 };
 
+const int MESSAGE_SIZE = 7;
+const string MESSAGE_TEXT[MESSAGE_SIZE]
+{
+    "WARNING: Unrecognized command.",
+    "WARNING: Failed to add component.\nFormat: ADD <TYPE> <x> <y>",
+    "WARNING: Failed to remove component.\nFormat: REMOVE <x> <y>",
+    "WARNING: Failed to move up layers.\nFormat: UP <z>",
+    "WARNING: Failed to move down layers.\nFormat: DOWN <z>",
+    "WARNING: Failed to run.\nFormat: RUN",
+    "WARNING: Failed to setup.\nFormat: SETUP <x> <y>"
+};
+enum MESSAGE_TYPE
+{
+    MSG_INV_CMD,
+    MSG_INV_ADD,
+    MSG_INV_REMOVE,
+    MSG_INV_UP,
+    MSG_INV_DOWN,
+    MSG_INV_RUN,
+    MSG_INV_SETUP,
+    MSG_INV_QUIT
+};
+
 void addComponent(Layer &layer, stringstream &ss);
 void displayGrid(Layer &layer);
 void displayCommands();
 void displayComponents();
+void displayMessage(MESSAGE_TYPE code);
 CommandType getCommandType(stringstream &ss);
 ComponentType getComponentType(stringstream &ss);
 void getInput(stringstream &ss);
 void layerUp(Layer &layer, stringstream &ss);
 void layerDown(Layer &layer, stringstream &ss);
 void removeComponent(Layer &layer, stringstream &ss);
-CommandType setup(Layer &layer, stringstream &ss);
+void setup(Layer &layer, stringstream &ss);
 
 #endif
