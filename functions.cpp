@@ -1,5 +1,12 @@
 #include "header.h"
 
+
+/* Purpose:  To add a component according to user input
+ *     Pre:  Current layer exists,
+ *           stringstream with component type, x position, and y position
+ *    Post:  Adds component of given type at given position
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
 void addComponent(Layer &layer, stringstream &ss)
 {
     Component     tmp;
@@ -60,6 +67,11 @@ void addComponent(Layer &layer, stringstream &ss)
 }
 
 
+/* Purpose:  To display the current layer's grid on the screen
+ *     Pre:  Current layer exists
+ *    Post:  Displays grid on the screen
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
 void displayGrid(Layer &layer)
 {
     Component tmp;
@@ -84,6 +96,12 @@ void displayGrid(Layer &layer)
     cout << endl;
 }
 
+
+/* Purpose:  To display a list of user commands on the screen
+ *     Pre:  None
+ *    Post:  Displays list of user commands on the screen
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
 void displayCommands()
 {
     for (int i = 0; i < COMMAND_SIZE; i++)
@@ -93,6 +111,12 @@ void displayCommands()
     cout << endl;
 }
 
+
+/* Purpose:  To display a list of component names on the screen
+ *     Pre:  None
+ *    Post:  List of component names displayed on the screen
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
 void displayComponents()
 {
     for (int i = 0; i < COMPONENT_SIZE; i++)
@@ -102,6 +126,12 @@ void displayComponents()
     cout << endl;
 }
 
+
+/* Purpose:  To get a line of input from the user
+ *     Pre:  Stringstream for storing input
+ *    Post:  Stores user input in stringstream
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
 void getInput(stringstream &ss)
 {
     string input = "";
@@ -114,6 +144,12 @@ void getInput(stringstream &ss)
     getline(ss, input);
 }
 
+
+/* Purpose:  To read a command type from the user's input
+ *     Pre:  Stringstream containing user input
+ *    Post:  Returns command type (ENTRY for invalid input)
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
 CommandType getCommandType(stringstream &ss)
 {
     CommandType type  = ENTRY;
@@ -131,6 +167,12 @@ CommandType getCommandType(stringstream &ss)
     return type;
 }
 
+
+/* Purpose:  To read a component type from the user's input
+ *     Pre:  Stringstream containing user input
+ *    Post:  Returns component type (EMPTY for invalid input)
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
 ComponentType getComponentType(stringstream &ss)
 {
     ComponentType type  = EMPTY;
@@ -148,6 +190,13 @@ ComponentType getComponentType(stringstream &ss)
     return type;
 }
 
+
+/* Purpose:  To move the user up by a given number of layers
+ *     Pre:  Current layer exists,
+ *           stringstream with move amount
+ *    Post:  Moves user up by a given number of layers
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
 void layerUp(Layer &layer, stringstream &ss)
 {
     string data = "";
@@ -179,6 +228,13 @@ void layerUp(Layer &layer, stringstream &ss)
     // change layer here
 }
 
+
+/* Purpose:  To move the user up down a given number of layers
+ *     Pre:  Current layer exists,
+ *           stringstream with move amount
+ *    Post:  Moves user down by a given number of layers
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
 void layerDown(Layer &layer, stringstream &ss)
 {
     string data = "";
@@ -210,6 +266,13 @@ void layerDown(Layer &layer, stringstream &ss)
     // change layer here
 }
 
+
+/* Purpose:  To remove a component according to user input
+ *     Pre:  Current layer exists,
+ *           stringstream with x position and y position
+ *    Post:  Removes component at given position
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
 void removeComponent(Layer &layer, stringstream &ss)
 {
     string data = "";
@@ -260,6 +323,13 @@ void removeComponent(Layer &layer, stringstream &ss)
     // Actually remove the component
 }
 
+
+/* Purpose:  To create a new system according to user specifications
+ *     Pre:  Current layer exists,
+ *           stringstream with x width and y height
+ *    Post:  Creates new system with given width and height
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
 CommandType setup(Layer &layer, stringstream &ss)
 {
     return ENTRY;
