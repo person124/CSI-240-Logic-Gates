@@ -12,9 +12,9 @@ class Grid
 		int getWidth();
 		int getHeight();
         bool remove(int, int);
+        void resize(int, int);
         bool set(int, int, Component);
     private:
-        void resize(int, int);
         Component** mGrid;
         int mWidth, mHeight;
 };

@@ -1,7 +1,6 @@
 #ifndef LAYER_H
 #define LAYER_H
 
-#include "stddef.h"
 #include "grid.h"
 
 class Layer
