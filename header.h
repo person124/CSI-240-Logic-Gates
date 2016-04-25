@@ -18,6 +18,8 @@
 
 using namespace std;
 
+/* COMMAND
+ ******************************************************************************/
 const int    COMMAND_SIZE = 7;
 const string COMMAND_NAME[COMMAND_SIZE]
 {
@@ -42,6 +44,8 @@ enum CommandType
     ENTRY
 };
 
+/* COMPONENT
+ ******************************************************************************/
 const int    COMPONENT_SIZE = 4;
 const string COMPONENT_NAME[COMPONENT_SIZE]
 {
@@ -61,6 +65,7 @@ enum ComponentType
     /* Invalid as input */
     EMPTY
 };
+
 const string COMPONENT_OFF[COMPONENT_SIZE + 1]
 {
     /* Valid as input */
@@ -84,6 +89,8 @@ const string COMPONENT_ON[COMPONENT_SIZE + 1]
     "   "
 };
 
+/* MESSAGE
+ ******************************************************************************/
 const int MESSAGE_SIZE = 7;
 const string MESSAGE_TEXT[MESSAGE_SIZE]
 {
@@ -107,12 +114,15 @@ enum MESSAGE_TYPE
     MSG_INV_QUIT
 };
 
+/* FUNCTIONS
+ ******************************************************************************/
 void addComponent(Layer &layer, stringstream &ss);
 void displayGrid(Layer &layer);
 void displayCommands();
 void displayComponents();
 void displayMessage(MESSAGE_TYPE code);
 CommandType getCommandType(stringstream &ss);
+ComponentType getComponentType(string id);
 ComponentType getComponentType(stringstream &ss);
 void getInput(stringstream &ss);
 void layerUp(Layer &layer, stringstream &ss);
