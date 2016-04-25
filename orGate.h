@@ -1,20 +1,22 @@
 //
-//  andGate.hpp
+//  orGate.hpp
 //  LogicGates
 //
 //  Created by Peter Belsley on 4/25/16.
 //  Copyright © 2016 Peter Belsley. All rights reserved.
 //
 
-#ifndef andGate_hpp
-#define andGate_hpp
+#ifndef orGate_hpp
+#define orGate_hpp
 
 #include "gate.h"
 
-class AndGate : Gate {
+
+class orGate : protected Gate {
+
 public:
-	AndGate();
+	orGate();
 	Charge getOutputCharge();
 };
 
-#endif /* andGate_hpp */
+#endif /* orGate_hpp */

@@ -15,6 +15,8 @@ Component::Component() {
 
 	location.xPos = 0;
 	location.yPos = 0;
+
+	ID = "NULL";
 }
 
 Component::~Component()

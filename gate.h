@@ -12,6 +12,7 @@
 #include "component.h"
 
 class Gate : protected Component {
+protected:
 	Charge input1, input2;
 
 public:

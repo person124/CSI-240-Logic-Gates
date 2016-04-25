@@ -14,7 +14,7 @@ AndGate::AndGate(){
 	ID = "ANDGATE";
 }
 
-Charge Gate::getOutputCharge(){
+Charge AndGate::getOutputCharge(){
 	if (input2 == charged && input1 == charged) {
 		return charged;
 	} else {

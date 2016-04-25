@@ -7,6 +7,7 @@ Power::Power()
 	outputNorth = true;
 	outputSouth = true;
 	outputWest = true;
+	ID = "POWER";
 }
 
 Power::~Power()
