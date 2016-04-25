@@ -9,12 +9,16 @@
  ******************************************************************************/
 void addComponent(Layer &layer, stringstream &ss)
 {
-    ComponentType type = EMPTY;
-    string        data = "";
-    int           xPos = -1;
-    int           xSize = 0;
-    int           yPos = -1;
-    int           ySize = 0;
+    Component     component;
+    int           currentLayer = 0;
+    string        data         = "";
+    ComponentType type         = EMPTY;
+    int           xPos         = -1;
+    int           xSize        = 0;
+    int           yPos         = -1;
+    int           ySize        = 0;
+
+    currentLayer = layer.getCurrentLayer();
 
     /* Read component type */
     type = getComponentType(ss);
@@ -29,7 +33,7 @@ void addComponent(Layer &layer, stringstream &ss)
     if (utls::isDigit(data))
     {
         xPos = stoi(data);
-        xSize = layer.get(layer.getCurrentLayer())->getWidth();
+        xSize = layer.get(currentLayer)->getWidth();
 
         /* Validate x position */
         if (xPos < 0 || xPos > xSize)
@@ -48,7 +52,7 @@ void addComponent(Layer &layer, stringstream &ss)
     if (utls::isDigit(data))
     {
         yPos = stoi(data);
-        ySize = layer.get(layer.getCurrentLayer())->getHeight();
+        ySize = layer.get(currentLayer)->getHeight();
 
         /* Validate y position */
         if (yPos < 0 || yPos > ySize)
@@ -70,7 +74,8 @@ void addComponent(Layer &layer, stringstream &ss)
     }
     data.clear();
 
-    // Actually add the component
+    component.setID(COMPONENT_NAME[static_cast<int>(type)]);
+    layer.get(currentLayer)->set(xPos, yPos, component);
 }
 
 
@@ -397,7 +402,7 @@ void removeComponent(Layer &layer, stringstream &ss)
     }
     data.clear();
 
-    // Actually remove the component
+    layer.get(layer.getCurrentLayer())->remove(xPos, yPos);
 }
 
 
@@ -446,4 +451,5 @@ void setup(Layer &layer, stringstream &ss)
     data.clear();
 
     // Actually set the width and height
+    layer.get(layer.getCurrentLayer())->resize(xSize, ySize);
 }
