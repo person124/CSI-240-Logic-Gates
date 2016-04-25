@@ -57,5 +57,5 @@ protected:
 	
 	position location;
 	ComponentID ID;
-	Charge isCharged;
+	Charge isCharged, inputCharge;
 };
