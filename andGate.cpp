@@ -11,7 +11,7 @@ AndGate::AndGate(){
 	outputEast = true;
 	inputNorth = true;
 	inputSouth = true;
-	ID = andGate;
+	ID = "ANDGATE";
 }
 
 Charge Gate::getOutputCharge(){

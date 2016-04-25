@@ -11,7 +11,7 @@ Wire::Wire()
 	outputSouth = true;
 	outputEast = true;
 	outputWest = true;
-	ID = wire;
+	ID = "WIRE";
 }
 
 Wire::~Wire()

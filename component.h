@@ -7,11 +7,6 @@ enum Charge
 	charged, noCharge, disconected
 };
 
-enum ComponentID
-{
-	wire, verticalWire, light, power, andGate, orGate
-};
-
 struct position
 {
 	int xPos, yPos;
@@ -41,6 +36,8 @@ public:
 	Charge getCharge();
 
 	Charge getOutputCharge();
+
+	string getID();
 	
 protected:
 	bool
@@ -56,6 +53,6 @@ protected:
 	
 	
 	position location;
-	ComponentID ID;
+	string ID;
 	Charge isCharged, inputCharge;
 };

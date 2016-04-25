@@ -224,6 +224,6 @@ Grid* operator--(Layer& l)
 		l.push(new Grid());
 		temp = l.get(0);
 	}
-	if (l > 0) l.setCurrentLayer(l.getCurrentLayer() - 1);
+	if (l.getCurrentLayer() > 0) l.setCurrentLayer(l.getCurrentLayer() - 1);
 	return temp;
 }

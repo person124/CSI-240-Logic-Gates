@@ -139,12 +139,21 @@ Charge Component::getOutputCharge()
 
 /* Purpose:  To tell a compnent it is charged (Use for all)
  *     Pre:  A component
- *    Post:  The component'ssa
- charge and output charge is set
+ *    Post:  The component's charge and output charge is set
  *  Author:  Peter Belsley
  ******************************************************************************/
 
 void Component::setCharged(Charge ch){
 	inputCharge = ch;
 	isCharged = ch;
+}
+
+/* Purpose:  To get the component type
+ *     Pre:  A component
+ *    Post:  the components id
+ *  Author:  Peter Belsley
+ ******************************************************************************/
+
+string Component::getID(){
+	return ID;
 }
