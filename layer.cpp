@@ -1,5 +1,10 @@
 #include "layer.h"
 
+/* Purpose: Default constructor for the layer system
+ *     Pre: None
+ *    Post: Creates two layers to start with
+ *  Author: Calum M. Phillips
+ */
 Layer::Layer()
 {
     mCount = 0;
@@ -20,6 +25,11 @@ Layer::~Layer()
     }
 }
 
+/* Purpose: Adds a new Grid to the layer system at the specified location.
+ *     Pre: None
+ *    Post: See "Purpose"
+ *  Author: Calum M. Phillips
+ */
 void Layer::add(int num, Grid* g)
 {
     if (num <= 0)
@@ -40,6 +50,11 @@ void Layer::add(int num, Grid* g)
     }
 }
 
+/* Purpose: Removes the layer at the front
+ *     Pre: None
+ *    Post: See "Purpose"
+ *  Author: Calum M. Phillips
+ */
 void Layer::dequeue()
 {
     if (mHead == NULL)
@@ -60,6 +75,11 @@ void Layer::dequeue()
     mCount--;
 }
 
+/* Purpose: Adds the specified grid to the back of the layers
+ *     Pre: None
+ *    Post: See "Purpose"
+ *  Author: Calum M. Phillips
+ */
 void Layer::enqueue(Grid* g)
 {
     Node* temp = new Node(g);
@@ -68,6 +88,11 @@ void Layer::enqueue(Grid* g)
     mCount++;
 }
 
+/* Purpose: Gets the layer at the specific location, if unfound, returns NULL
+ *     Pre: None
+ *    Post: None
+ *  Author: Calum M. Phillips
+ */
 Grid* Layer::get(int num)
 {
     if (num < 0 || num >= mCount)
@@ -87,11 +112,21 @@ int Layer::getCount()
 	return mCount;
 }
 
+/* Purpose: Gets the systems current layer.
+ *     Pre: None
+ *    Post: None
+ *  Author: Calum M. Phillips
+ */
 int Layer::getCurrentLayer()
 {
 	return mCurrent;
 }
 
+/* Purpose: Adds the specified grid to the front of the list
+ *     Pre: None
+ *    Post: See "Purpose"
+ *  Author: Calum M. Phillips
+ */
 void Layer::push(Grid* g)
 {
     if (mHead == NULL)
@@ -110,6 +145,11 @@ void Layer::push(Grid* g)
     mCount++;
 }
 
+/* Purpose: Removes the first layer from the list
+ *     Pre: None
+ *    Post: See "Purpose"
+ *  Author: Calum M. Phillips
+ */
 void Layer::pop()
 {
     if (mHead == NULL)
@@ -120,6 +160,11 @@ void Layer::pop()
     mCount--;
 }
 
+/* Purpose: Removes the layer at the specified location.
+ *     Pre: None
+ *    Post: See "Purpose"
+ *  Author: Calum M. Phillips
+ */
 void Layer::remove(int num)
 {
     if (num <= 0)
@@ -144,6 +189,16 @@ void Layer::remove(int num)
     }
 }
 
+void Layer::setCurrentLayer(int num)
+{
+    mCount = num;
+}
+
+/* Purpose: Moves one up in the layers.
+ *     Pre: None
+ *    Post: The current layer goes up by one.
+ *  Author: Calum M. Phillips
+ */
 Grid* operator++(Layer& l)
 {
 	Grid* temp = l.get(l.getCurrentLayer() + 1);
@@ -152,9 +207,15 @@ Grid* operator++(Layer& l)
 		l.enqueue(new Grid());
 		temp = l.get(l.getCount() - 1);
 	}
+	l.setCurrentLayer(l.getCurrentLayer() + 1);
 	return temp;
 }
 
+/* Purpose: Moves one down in the layers.
+ *     Pre: None
+ *    Post: The current layer goes down by one.
+ *  Author: Calum M. Phillips
+ */
 Grid* operator--(Layer& l)
 {
 	Grid* temp = l.get(l.getCurrentLayer() - 1);
@@ -163,5 +224,6 @@ Grid* operator--(Layer& l)
 		l.push(new Grid());
 		temp = l.get(0);
 	}
+	if (l > 0) l.setCurrentLayer(l.getCurrentLayer() - 1);
 	return temp;
 }

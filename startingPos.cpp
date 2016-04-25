@@ -18,6 +18,11 @@ StartingList::~StartingList()
     }
 }
 
+/* Purpose: Creates and adds a new starting pos at layer, x, and y.
+ *     Pre: None
+ *    Post: See "Purpose"
+ *  Author: Calum M. Phillips
+ */
 void StartingList::add(int l, int x, int y)
 {
     StartingPos p;
@@ -27,6 +32,11 @@ void StartingList::add(int l, int x, int y)
     add(p);
 }
 
+/* Purpose: Adds the specified starting pos to the list
+ *     Pre: None
+ *    Post: See "Purpose"
+ *  Author: Calum M. Phillips
+ */
 void StartingList::add(StartingPos pos)
 {
     Node* node = new Node(pos);
@@ -42,6 +52,11 @@ void StartingList::add(StartingPos pos)
     mCount++;
 }
 
+/* Purpose: Returns the starting pos at the specified index, if none found, will return NULL
+ *     Pre: None
+ *    Post: See "Purpose"
+ *  Author: Calum M. Phillips
+ */
 StartingPos* StartingList::get(int num)
 {
     if (num < 0 || num >= mCount)
@@ -59,6 +74,11 @@ int StartingList::getCount()
     return mCount;
 }
 
+/* Purpose: Removes the specified starting pos
+ *     Pre: None
+ *    Post: See "Purpose"
+ *  Author: Calum M. Phillips
+ */
 void StartingList::remove(int l, int x, int y)
 {
     StartingPos p;
@@ -68,6 +88,11 @@ void StartingList::remove(int l, int x, int y)
     remove(p);
 }
 
+/* Purpose: Removes the specified starting pos
+ *     Pre: None
+ *    Post: See "Purpose"
+ *  Author: Calum M. Phillips
+ */
 void StartingList::remove(StartingPos pos)
 {
     if (mHead == NULL)

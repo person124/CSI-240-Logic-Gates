@@ -17,6 +17,11 @@ Grid::~Grid()
     delete mGrid;
 }
 
+/* Purpose: Gets the component at a specified location
+ *     Pre: None
+ *    Post: None
+ *  Author: Calum M. Phillips
+ */
 Component Grid::get(int x, int y)
 {
     if (x < 0 || y < 0 || x >= mWidth || y >= mHeight)
@@ -34,6 +39,11 @@ int Grid::getHeight()
 	return mHeight;
 }
 
+/* Purpose: Clears the component at the specified location
+ *     Pre: None
+ *    Post: Sets the data at the location to the empty component, and returns true if successful
+ *  Author: Calum M. Phillips
+ */
 bool Grid::remove(int x, int y)
 {
     if (x < 0 || y < 0 || x >= mWidth || x >= mHeight)
@@ -42,6 +52,11 @@ bool Grid::remove(int x, int y)
     return true;
 }
 
+/* Purpose: Resizes the grid to the new dimensions
+ *     Pre: None
+ *    Post: Any excess data is removed, and new slots are filled with the empty component
+ *  Author: Calum M. Phillips
+ */
 void Grid::resize(int newW, int newH)
 {
     if (mWidth != newW)
@@ -96,6 +111,11 @@ void Grid::resize(int newW, int newH)
     }
 }
 
+/* Purpose: Sets the component at the specified location to the specified value.
+ *     Pre: None
+ *    Post: Sets the data, and returns true if the data was set.
+ *  Author: Calum M. Phillips
+ */
 bool Grid::set(int x, int y, Component c)
 {
     if (x < 0 || y < 0 || x >= mWidth || y >= mHeight)

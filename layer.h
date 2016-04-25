@@ -36,6 +36,7 @@ class Layer
         void pop();
         void enqueue(Grid*);
         void remove(int);
+        void setCurrentLayer(int);
 };
 
 Grid* operator++(Layer&);
