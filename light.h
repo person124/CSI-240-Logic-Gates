@@ -1,4 +1,5 @@
-#pragma once
+#ifndef light_h
+#define light_h
 class Light
 {
 public:
@@ -8,3 +9,4 @@ public:
 private:
 
 };
+#endif

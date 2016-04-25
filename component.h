@@ -9,7 +9,7 @@ enum Charge
 
 enum ComponentID
 {
-	wire, verticalWire, light, power
+	wire, verticalWire, light, power, andGate, orGate
 };
 
 struct position

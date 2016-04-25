@@ -139,7 +139,8 @@ Charge Component::getOutputCharge()
 
 /* Purpose:  To tell a compnent it is charged (Use for all)
  *     Pre:  A component
- *    Post:  The component's charge and output charge is set
+ *    Post:  The component'ssa
+ charge and output charge is set
  *  Author:  Peter Belsley
  ******************************************************************************/
 
