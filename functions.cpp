@@ -7,9 +7,10 @@
  *    Post:  Adds component of given type at given position
  *  Author:  Matthew James Harrison
  ******************************************************************************/
-void addComponent(Layer &layer, stringstream &ss)
+void addComponent(Layer &layer, StartingList &startingList, stringstream &ss)
 {
     Component     component;
+
     int           currentLayer = 0;
     string        data         = "";
     ComponentType type         = EMPTY;
@@ -20,8 +21,8 @@ void addComponent(Layer &layer, stringstream &ss)
 
     currentLayer = layer.getCurrentLayer();
 
-    /* Read component type */
     type = getComponentType(ss);
+
     if (type == EMPTY)
     {
         return;
@@ -75,7 +76,13 @@ void addComponent(Layer &layer, stringstream &ss)
     data.clear();
 
     component.setID(COMPONENT_NAME[static_cast<int>(type)]);
+
     layer.get(currentLayer)->set(xPos, yPos, component);
+
+    if (type == POWER)
+    {
+        startingList.add(currentLayer, xPos, yPos);
+    }
 }
 
 
@@ -87,18 +94,24 @@ void addComponent(Layer &layer, stringstream &ss)
 void displayGrid(Layer &layer)
 {
     Component     tmp;
-    string        id   = "";
-    ComponentType type = EMPTY;
 
-    for (int i = 0; i < layer.get(layer.getCurrentLayer())->getHeight(); i++)
+    int           currentLayer = 0;
+    string        id           = "";
+    ComponentType type         = EMPTY;
+
+    currentLayer = layer.getCurrentLayer();
+
+    for (int i = 0; i < layer.get(currentLayer)->getHeight(); i++)
     {
-        for (int j = 0; j < layer.get(layer.getCurrentLayer())->getWidth(); j++)
+        for (int j = 0; j < layer.get(currentLayer)->getWidth(); j++)
         {
-            tmp = layer.get(layer.getCurrentLayer())->get(i, j);
+            tmp = layer.get(currentLayer)->get(i, j);
 
             id = tmp.getID();
+
             type = getComponentType(id);
 
+            /* */
             if (tmp.getCharge() == charged)
             {
                 cout << COMPONENT_ON[static_cast<int>(type)];
@@ -224,7 +237,7 @@ ComponentType getComponentType(string id)
 }
 
 
-/* Purpose:  To read a component type from the user's input
+/* Purpose:  To read a component type from the user's input stream
  *     Pre:  Stringstream containing user input
  *    Post:  Returns component type (EMPTY for invalid input)
  *  Author:  Matthew James Harrison
@@ -235,6 +248,7 @@ ComponentType getComponentType(stringstream &ss)
     ComponentType type = EMPTY;
 
     ss >> data;
+
     for (int i = 0; i < COMPONENT_SIZE; i++)
     {
         if (COMPONENT_NAME[i] == data)
@@ -242,7 +256,6 @@ ComponentType getComponentType(stringstream &ss)
             type = static_cast<ComponentType>(i);
         }
     }
-    data.clear();
 
     return type;
 }
@@ -259,8 +272,8 @@ void layerUp(Layer &layer, stringstream &ss)
     string data = "";
     int    amount = 0;
 
-    /* Read amount */
     ss >> data;
+
     if (data.empty())
     {
         amount = 1;
@@ -290,7 +303,7 @@ void layerUp(Layer &layer, stringstream &ss)
 
     for (int i = 0; i < amount; i++)
     {
-        layer++;
+        ++layer;
     }
 }
 
@@ -337,7 +350,7 @@ void layerDown(Layer &layer, stringstream &ss)
 
     for (int i = 0; i < amount; i++)
     {
-        layer--;
+        --layer;
     }
 }
 
@@ -350,18 +363,21 @@ void layerDown(Layer &layer, stringstream &ss)
  ******************************************************************************/
 void removeComponent(Layer &layer, stringstream &ss)
 {
-    string data  = "";
-    int    xPos  = -1;
-    int    xSize = 0;
-    int    yPos  = -1;
-    int    ySize = 0;
+    int    currentLayer = 0;
+    string data         = "";
+    int    xPos         = -1;
+    int    xSize        = 0;
+    int    yPos         = -1;
+    int    ySize        = 0;
+
+    currentLayer = layer.getCurrentLayer();
 
     /* Read x position */
     ss >> data;
     if (utls::isDigit(data))
     {
         xPos = stoi(data);
-        xSize = layer.get(layer.getCurrentLayer())->getWidth();
+        xSize = layer.get(currentLayer)->getWidth();
 
         /* Validate x position */
         if (xPos < 0 || xPos > xSize)
@@ -379,8 +395,8 @@ void removeComponent(Layer &layer, stringstream &ss)
     ss >> data;
     if (utls::isDigit(data))
     {
-        yPos = stoi(data);
-        ySize = layer.get(layer.getCurrentLayer())->getHeight();
+        yPos  = stoi(data);
+        ySize = layer.get(currentLayer)->getHeight();
 
         /* Validate y position */
         if (yPos < 0 || yPos > ySize)
@@ -402,7 +418,7 @@ void removeComponent(Layer &layer, stringstream &ss)
     }
     data.clear();
 
-    layer.get(layer.getCurrentLayer())->remove(xPos, yPos);
+    layer.get(currentLayer)->remove(xPos, yPos);
 }
 
 
@@ -414,9 +430,12 @@ void removeComponent(Layer &layer, stringstream &ss)
  ******************************************************************************/
 void setup(Layer &layer, stringstream &ss)
 {
-    string data  = "";
-    int    xSize = 0;
-    int    ySize = 0;
+    int    currentLayer = 0;
+    string data         = "";
+    int    xSize        = 0;
+    int    ySize        = 0;
+
+    currentLayer = layer.getCurrentLayer();
 
     /* Read x size */
     ss >> data;
@@ -451,5 +470,5 @@ void setup(Layer &layer, stringstream &ss)
     data.clear();
 
     // Actually set the width and height
-    layer.get(layer.getCurrentLayer())->resize(xSize, ySize);
+    layer.get(currentLayer)->resize(xSize, ySize);
 }

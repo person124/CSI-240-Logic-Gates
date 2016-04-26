@@ -46,12 +46,11 @@ enum CommandType
 
 /* COMPONENT
  ******************************************************************************/
-const int    COMPONENT_SIZE = 4;
+const int    COMPONENT_SIZE = 3;
 const string COMPONENT_NAME[COMPONENT_SIZE]
 {
     "POWER",
     "WIRE",
-    "WIRE V",
     "LIGHT",
 };
 enum ComponentType
@@ -59,7 +58,6 @@ enum ComponentType
     /* Valid as input */
     POWER,
     WIRE,
-    WIRE_V,
     LIGHT,
 
     /* Invalid as input */
@@ -71,7 +69,6 @@ const string COMPONENT_OFF[COMPONENT_SIZE + 1]
     /* Valid as input */
     " P ",
     " + ",
-    "[+]",
     " . ",
 
     /* Invalid as input */
@@ -82,7 +79,6 @@ const string COMPONENT_ON[COMPONENT_SIZE + 1]
     /* Valid as input */
     " P ",
     " * ",
-    "[*]",
     " ! ",
 
     /* Invalid as input */
@@ -116,7 +112,7 @@ enum MESSAGE_TYPE
 
 /* FUNCTIONS
  ******************************************************************************/
-void addComponent(Layer &layer, stringstream &ss);
+void addComponent(Layer &layer, StartingList &startingList, stringstream &ss);
 void displayGrid(Layer &layer);
 void displayCommands();
 void displayComponents();
