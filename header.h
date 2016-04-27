@@ -15,6 +15,8 @@
 
 using namespace std;
 
+/* COMMAND
+ ******************************************************************************/
 const int    COMMAND_SIZE = 7;
 const string COMMAND_NAME[COMMAND_SIZE]
 {
@@ -39,12 +41,13 @@ enum CommandType
     ENTRY
 };
 
-const int    COMPONENT_SIZE = 4;
+/* COMPONENT
+ ******************************************************************************/
+const int    COMPONENT_SIZE = 3;
 const string COMPONENT_NAME[COMPONENT_SIZE]
 {
     "POWER",
     "WIRE",
-    "WIRE V",
     "LIGHT",
 };
 enum ComponentType
@@ -52,18 +55,17 @@ enum ComponentType
     /* Valid as input */
     POWER,
     WIRE,
-    WIRE_V,
     LIGHT,
 
     /* Invalid as input */
     EMPTY
 };
+
 const string COMPONENT_OFF[COMPONENT_SIZE + 1]
 {
     /* Valid as input */
     " P ",
     " + ",
-    "[+]",
     " . ",
 
     /* Invalid as input */
@@ -74,13 +76,14 @@ const string COMPONENT_ON[COMPONENT_SIZE + 1]
     /* Valid as input */
     " P ",
     " * ",
-    "[*]",
     " ! ",
 
     /* Invalid as input */
     "   "
 };
 
+/* MESSAGE
+ ******************************************************************************/
 const int MESSAGE_SIZE = 7;
 const string MESSAGE_TEXT[MESSAGE_SIZE]
 {
@@ -104,12 +107,15 @@ enum MESSAGE_TYPE
     MSG_INV_QUIT
 };
 
-void addComponent(Layer &layer, stringstream &ss);
+/* FUNCTIONS
+ ******************************************************************************/
+void addComponent(Layer &layer, StartingList &startingList, stringstream &ss);
 void displayGrid(Layer &layer);
 void displayCommands();
 void displayComponents();
 void displayMessage(MESSAGE_TYPE code);
 CommandType getCommandType(stringstream &ss);
+ComponentType getComponentType(string id);
 ComponentType getComponentType(stringstream &ss);
 void getInput(stringstream &ss);
 void layerUp(Layer &layer, stringstream &ss);
