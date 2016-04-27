@@ -75,7 +75,7 @@ void addComponent(Layer &layer, StartingList &startingList, stringstream &ss)
     }
     data.clear();
 
-    component.setID(COMPONENT_NAME[static_cast<int>(type)]);
+    component = Component(COMPONENT_NAME[static_cast<int>(type)]);
 
     layer.get(currentLayer)->set(xPos, yPos, component);
 
@@ -110,9 +110,9 @@ void displayGrid(Layer &layer)
             id = tmp.getID();
 
             type = getComponentType(id);
-
+    
             /* */
-            if (tmp.getCharge() == charged)
+            if (tmp.getCharge())
             {
                 cout << COMPONENT_ON[static_cast<int>(type)];
             }

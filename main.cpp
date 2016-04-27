@@ -22,7 +22,7 @@ int main()
             break;
 
         case ADD:
-            addComponent(layer,startingList , ss);
+            addComponent(layer, startingList, ss);
             break;
 
         case REMOVE:
