@@ -7,15 +7,22 @@
  *    Post:  Adds component of given type at given position
  *  Author:  Matthew James Harrison
  ******************************************************************************/
-void addComponent(Layer &layer, stringstream &ss)
+void addComponent(Layer &layer, StartingList &startingList, stringstream &ss)
 {
-    ComponentType type = EMPTY;
-    string        data = "";
-    int           xPos = -1;
-    int           yPos = -1;
+    Component     component;
 
-    /* Read component type */
+    int           currentLayer = 0;
+    string        data         = "";
+    ComponentType type         = EMPTY;
+    int           xPos         = -1;
+    int           xSize        = 0;
+    int           yPos         = -1;
+    int           ySize        = 0;
+
+    currentLayer = layer.getCurrentLayer();
+
     type = getComponentType(ss);
+
     if (type == EMPTY)
     {
         return;
@@ -27,9 +34,10 @@ void addComponent(Layer &layer, stringstream &ss)
     if (utls::isDigit(data))
     {
         xPos = stoi(data);
+        xSize = layer.get(currentLayer)->getWidth();
 
         /* Validate x position */
-        if (xPos < 0 || xPos > layer.get(layer.getCurrentLayer())->getWidth())
+        if (xPos < 0 || xPos > xSize)
         {
             return;
         }
@@ -45,9 +53,10 @@ void addComponent(Layer &layer, stringstream &ss)
     if (utls::isDigit(data))
     {
         yPos = stoi(data);
+        ySize = layer.get(currentLayer)->getHeight();
 
         /* Validate y position */
-        if (yPos < 0 || yPos > layer.get(layer.getCurrentLayer())->getHeight())
+        if (yPos < 0 || yPos > ySize)
         {
             return;
         }
@@ -66,7 +75,14 @@ void addComponent(Layer &layer, stringstream &ss)
     }
     data.clear();
 
-    // Actually add the component
+    component.setID(COMPONENT_NAME[static_cast<int>(type)]);
+
+    layer.get(currentLayer)->set(xPos, yPos, component);
+
+    if (type == POWER)
+    {
+        startingList.add(currentLayer, xPos, yPos);
+    }
 }
 
 
@@ -77,23 +93,38 @@ void addComponent(Layer &layer, stringstream &ss)
  ******************************************************************************/
 void displayGrid(Layer &layer)
 {
-    Component tmp;
+    Component     tmp;
 
-    for (int i = 0; i < layer.get(layer.getCurrentLayer())->getHeight(); i++)
+    int           currentLayer = 0;
+    string        id           = "";
+    ComponentType type         = EMPTY;
+
+    currentLayer = layer.getCurrentLayer();
+
+    for (int i = 0; i < layer.get(currentLayer)->getHeight(); i++)
     {
-        for (int j = 0; j < layer.get(layer.getCurrentLayer())->getWidth(); j++)
+        for (int j = 0; j < layer.get(currentLayer)->getWidth(); j++)
         {
-            tmp = layer.get(layer.getCurrentLayer())->get(i, j);
+            tmp = layer.get(currentLayer)->get(i, j);
 
+            id = tmp.getID();
+
+            type = getComponentType(id);
+
+            /* */
             if (tmp.getCharge() == charged)
             {
-                //cout << COMPONENT_ON[static_cast<int>(tmp.getComponentID()];
+                cout << COMPONENT_ON[static_cast<int>(type)];
             }
             else
             {
-                //cout << COMPONENT_OFF[static_cast<int>(tmp.getComponentID()];
+                cout << COMPONENT_OFF[static_cast<int>(type)];
             }
         }
+
+        tmp = Component();
+        id.clear();
+
         cout << endl;
     }
     cout << endl;
@@ -185,7 +216,28 @@ CommandType getCommandType(stringstream &ss)
 }
 
 
-/* Purpose:  To read a component type from the user's input
+/* Purpose:  To read a component type from a string
+ *     Pre:  String containing component type name
+ *    Post:  Returns component type (EMPTY for invalid input)
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
+ComponentType getComponentType(string id)
+{
+    ComponentType type = EMPTY;
+
+    for (int i = 0; i < COMPONENT_SIZE; i++)
+    {
+        if (COMPONENT_NAME[i] == id)
+        {
+            type = static_cast<ComponentType>(i);
+        }
+    }
+
+    return type;
+}
+
+
+/* Purpose:  To read a component type from the user's input stream
  *     Pre:  Stringstream containing user input
  *    Post:  Returns component type (EMPTY for invalid input)
  *  Author:  Matthew James Harrison
@@ -196,6 +248,7 @@ ComponentType getComponentType(stringstream &ss)
     ComponentType type = EMPTY;
 
     ss >> data;
+
     for (int i = 0; i < COMPONENT_SIZE; i++)
     {
         if (COMPONENT_NAME[i] == data)
@@ -203,7 +256,6 @@ ComponentType getComponentType(stringstream &ss)
             type = static_cast<ComponentType>(i);
         }
     }
-    data.clear();
 
     return type;
 }
@@ -220,13 +272,17 @@ void layerUp(Layer &layer, stringstream &ss)
     string data = "";
     int    amount = 0;
 
-    /* Read amount */
     ss >> data;
-    if (utls::isDigit(data))
+
+    if (data.empty())
+    {
+        amount = 1;
+    }
+    else if (utls::isDigit(data))
     {
         amount = stoi(data);
 
-        if (layer.getCurrentLayer() == layer.getCount())
+        if (amount < 1)
         {
             return;
         }
@@ -245,7 +301,10 @@ void layerUp(Layer &layer, stringstream &ss)
     }
     data.clear();
 
-    // Actually change layer here
+    for (int i = 0; i < amount; i++)
+    {
+        ++layer;
+    }
 }
 
 
@@ -262,11 +321,15 @@ void layerDown(Layer &layer, stringstream &ss)
 
     /* Read amount */
     ss >> data;
-    if (utls::isDigit(data))
+    if (data.empty())
+    {
+        amount = 1;
+    }
+    else if (utls::isDigit(data))
     {
         amount = stoi(data);
 
-        if (layer.getCurrentLayer() == 0)
+        if (amount < 1)
         {
             return;
         }
@@ -285,7 +348,10 @@ void layerDown(Layer &layer, stringstream &ss)
     }
     data.clear();
 
-    // Actually change layer here
+    for (int i = 0; i < amount; i++)
+    {
+        --layer;
+    }
 }
 
 
@@ -297,18 +363,24 @@ void layerDown(Layer &layer, stringstream &ss)
  ******************************************************************************/
 void removeComponent(Layer &layer, stringstream &ss)
 {
-    string data = "";
-    int    xPos = -1;
-    int    yPos = -1;
+    int    currentLayer = 0;
+    string data         = "";
+    int    xPos         = -1;
+    int    xSize        = 0;
+    int    yPos         = -1;
+    int    ySize        = 0;
+
+    currentLayer = layer.getCurrentLayer();
 
     /* Read x position */
     ss >> data;
     if (utls::isDigit(data))
     {
         xPos = stoi(data);
+        xSize = layer.get(currentLayer)->getWidth();
 
         /* Validate x position */
-        if (xPos < 0 || xPos > layer.get(layer.getCurrentLayer())->getWidth())
+        if (xPos < 0 || xPos > xSize)
         {
             return;
         }
@@ -323,10 +395,11 @@ void removeComponent(Layer &layer, stringstream &ss)
     ss >> data;
     if (utls::isDigit(data))
     {
-        yPos = stoi(data);
+        yPos  = stoi(data);
+        ySize = layer.get(currentLayer)->getHeight();
 
         /* Validate y position */
-        if (yPos < 0 || yPos > layer.get(layer.getCurrentLayer())->getHeight())
+        if (yPos < 0 || yPos > ySize)
         {
             return;
         }
@@ -345,7 +418,7 @@ void removeComponent(Layer &layer, stringstream &ss)
     }
     data.clear();
 
-    // Actually remove the component
+    layer.get(currentLayer)->remove(xPos, yPos);
 }
 
 
@@ -357,9 +430,12 @@ void removeComponent(Layer &layer, stringstream &ss)
  ******************************************************************************/
 void setup(Layer &layer, stringstream &ss)
 {
-    string data  = "";
-    int    xSize = 0;
-    int    ySize = 0;
+    int    currentLayer = 0;
+    string data         = "";
+    int    xSize        = 0;
+    int    ySize        = 0;
+
+    currentLayer = layer.getCurrentLayer();
 
     /* Read x size */
     ss >> data;
@@ -394,4 +470,5 @@ void setup(Layer &layer, stringstream &ss)
     data.clear();
 
     // Actually set the width and height
+    layer.get(currentLayer)->resize(xSize, ySize);
 }

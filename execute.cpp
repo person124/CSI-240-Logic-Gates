@@ -20,5 +20,62 @@ void execute(Layer& layer, StartingList& list)
 void invokeStart(Layer& layer, StartingPos* pos, Component& c, Charge charge)
 {
     c.setCharged(charge);
+	poke(layer, pos->mL, pos->mX, pos->mY, charge);
+}
 
+void invokeLight(Layer& layer, int l, int x, int y, Charge charge)
+{
+	Component c = layer.get(l)->get(x, y);
+	c.setCharged(charge);
+}
+
+void invokeNot(Layer& layer, int l, int x, int y, Charge charge)
+{
+	Component c = layer.get(l)->get(x, y);
+	c.setCharged(charge == charged ? noCharge : charge);
+	poke(layer, l, x + 1, y, c.getCharge());
+}
+
+void invokeWire(Layer& layer, int l, int x, int y, Charge charge)
+{
+	Component c = layer.get(l)->get(x, y);
+	c.setCharged(charge);
+	poke(layer, l, x, y, charge);
+}
+
+bool isGate(string id)
+{
+	return id == "AND" || id == "NAND" || id == "OR" || id == "NOR" || id == "XOR" || id == "XNOR";
+}
+
+void poke(Layer& layer, int l, int x, int y, Charge charge)
+{
+	pokeLoc(layer, l, x - 1, y, charge, 'r'); //Left
+	pokeLoc(layer, l, x, y - 1, charge, 'd'); //Up
+	pokeLoc(layer, l, x + 1, y, charge, 'l'); //Right
+	pokeLoc(layer, l, x, y + 1, charge, 'u'); //Down
+}
+
+void pokeLoc(Layer& layer, int l, int x, int y, Charge charge, char dir)
+{
+	Component c = layer.get(l)->get(x, y);
+	if (c.getID() == "NULL" || c.getID() == "POWER")
+		return;
+	else if (c.getID() == "WIRE" && !wireCheck(charge, c.getCharge()))
+		invokeWire(layer, l, x, y, charge);
+	else if (c.getID() == "LIGHT")
+		invokeLight(layer, l, x, y, charge);
+	else if (c.getID() == "NOT" && dir == 'l')
+		invokeNot(layer, l, x, y, charge);
+	else if (isGate(c.getID()))
+		return;
+}
+
+bool wireCheck(Charge in, Charge out)
+{
+	if (in == out)
+		return true;
+	if (in == noCharge && out == charged)
+		return true;
+	return false;
 }
