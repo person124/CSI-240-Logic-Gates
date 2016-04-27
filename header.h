@@ -10,9 +10,6 @@
 #include "grid.h"
 #include "layer.h"
 #include "component.h"
-#include "power.h"
-#include "wire.h"
-#include "light.h"
 #include "execute.h"
 #include "startingPos.h"
 

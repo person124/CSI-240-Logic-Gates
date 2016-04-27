@@ -2,57 +2,29 @@
 #include <string>
 
 using namespace std;
-enum Charge
-{		
-	charged, noCharge, disconected
-};
 
-struct position
-{
-	int xPos, yPos;
-};
+
 
 class Component
 {
 public:
 	Component();
 	~Component();
+	Component(string);
+	
+	void setCharged(bool);
 
-	void startOutputNorth();
-	void startOutputSouth();
-	void startOutputEast();
-	void startOutputWest();
+	bool getCharge();
 
-	void acceptInputNorth();
-	void acceptInputSouth();
-	void acceptInputEast();
-	void acceptInputWest();
-
-	void setLocation(int x, int y);
-
-	void setCharged(Charge);
-
-
-	Charge getCharge();
-
-	Charge getOutputCharge();
+	bool getOutputCharge();
 
 	string getID();
-	
-protected:
-	bool
-		inputNorth,
-		inputSouth,
-		inputEast,
-		inputWest,
 
-		outputNorth,
-		outputSouth,
-		outputEast,
-		outputWest;
-	
-	
-	position location;
+	void setID();
+
+	void operator=(const string &aString);
+
+protected:
 	string ID;
-	Charge isCharged, inputCharge;
+	bool isCharged;
 };
