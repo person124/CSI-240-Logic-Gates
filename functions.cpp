@@ -1,6 +1,5 @@
 #include "header.h"
 
-
 /* Purpose:  To add a component according to user input
  *     Pre:  Current layer exists,
  *           stringstream with component type, x position, and y position
