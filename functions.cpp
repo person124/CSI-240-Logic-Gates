@@ -192,7 +192,7 @@ void getInput(stringstream &ss)
     getline(cin, input);
     input = utls::toUpper(input);
 
-    getline(ss, input);
+    ss << input;
 }
 
 
@@ -204,7 +204,7 @@ void getInput(stringstream &ss)
 CommandType getCommandType(stringstream &ss)
 {
     string      data = "";
-    CommandType type  = ENTRY;
+    CommandType type  = EMPTY;
 
     ss >> data;
     for (int i = 0; i < COMMAND_SIZE; i++)

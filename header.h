@@ -38,7 +38,7 @@ enum CommandType
     SETUP,
     QUIT,
 
-    ENTRY
+    EMPTY
 };
 
 /* COMPONENT

@@ -4,23 +4,23 @@ int main()
 {
     Layer layer;
     StartingList startingList;
-    CommandType destination = ENTRY;
+    CommandType destination = NONE;
     stringstream ss;
 
     do
     {
         utls::clear();
 
+        /* Display interface */
         displayGrid(layer);
         displayCommands();
 
+        /* Parse input */
+        getInput(ss);
+        destination = getCommandType(ss);
+
         switch (destination)
         {
-        case ENTRY:
-            getInput(ss);
-            destination = getCommandType(ss);
-            break;
-
         case ADD:
             addComponent(layer, startingList, ss);
             break;
@@ -45,12 +45,13 @@ int main()
             setup(layer, ss);
             break;
 
-        default:
-            destination = ENTRY;
-        }
+        case QUIT:
+            break;
 
+        default:
+            destination = QUIT;
+        }
         ss.clear();
-        destination = ENTRY;
     }
     while (destination != QUIT);
 
