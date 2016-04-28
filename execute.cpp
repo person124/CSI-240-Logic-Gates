@@ -26,8 +26,11 @@ void invokeGate(Layer& layer, int l, int x, int y, bool charge, char dir)
     bool chargeDown = g->get(x, y + 1).getCharge();
 
     bool gCharge = false; // = SomeChargeFunc(id, chargeUp, chargeDown);
-    g->get(x, y).setCharged(gCharge);
-    pokeLoc(layer, l, x + 1, y, gCharge, 'r');
+    if (gCharge != g->get(x, y).getCharge())
+    {
+        g->get(x, y).setCharged(gCharge);
+        pokeLoc(layer, l, x + 1, y, gCharge, 'r');
+    }
 }
 
 void invokeLight(Layer& layer, int l, int x, int y, bool charge)
