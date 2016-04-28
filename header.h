@@ -69,7 +69,7 @@ const string COMPONENT_OFF[COMPONENT_SIZE + 1]
     " . ",
 
     /* Invalid as input */
-    "   "
+    " - "
 };
 const string COMPONENT_ON[COMPONENT_SIZE + 1]
 {
@@ -79,7 +79,7 @@ const string COMPONENT_ON[COMPONENT_SIZE + 1]
     " ! ",
 
     /* Invalid as input */
-    "   "
+    " - "
 };
 
 /* MESSAGE

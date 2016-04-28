@@ -100,15 +100,20 @@ void displayGrid(Layer &layer)
     Component     tmp;
 
     int           currentLayer = 0;
+    int           height       = 0;
     string        id           = "";
     ComponentType type         = EMPTY;
+    int           width        = 0;
 
     currentLayer = layer.getCurrentLayer();
+    height       = layer.get(currentLayer)->getHeight();
+    width        = layer.get(currentLayer)->getWidth();
 
-    for (int i = 0; i < layer.get(currentLayer)->getHeight(); i++)
+    for (int i = 0; i < height; i++)
     {
-        for (int j = 0; j < layer.get(currentLayer)->getWidth(); j++)
+        for (int j = 0; j < width; j++)
         {
+
             tmp = layer.get(currentLayer)->get(i, j);
 
             id = tmp.getID();
@@ -125,6 +130,7 @@ void displayGrid(Layer &layer)
                 cout << COMPONENT_OFF[static_cast<int>(type)];
             }
         }
+        cout << endl;
 
         tmp = Component();
         id.clear();
