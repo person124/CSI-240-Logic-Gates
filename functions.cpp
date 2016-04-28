@@ -38,11 +38,13 @@ void addComponent(Layer &layer, StartingList &startingList, stringstream &ss)
         /* Validate x position */
         if (xPos < 0 || xPos > xSize)
         {
+            displayMessage(MSG_INV_ADD);
             return;
         }
     }
     else
     {
+        displayMessage(MSG_INV_ADD);
         return;
     }
     data.clear();
@@ -57,11 +59,13 @@ void addComponent(Layer &layer, StartingList &startingList, stringstream &ss)
         /* Validate y position */
         if (yPos < 0 || yPos > ySize)
         {
+            displayMessage(MSG_INV_ADD);
             return;
         }
     }
     else
     {
+        displayMessage(MSG_INV_ADD);
         return;
     }
     data.clear();
@@ -70,6 +74,7 @@ void addComponent(Layer &layer, StartingList &startingList, stringstream &ss)
     ss >> data;
     if (!data.empty())
     {
+        displayMessage(MSG_INV_ADD);
         return;
     }
     data.clear();
@@ -283,11 +288,13 @@ void layerUp(Layer &layer, stringstream &ss)
 
         if (amount < 1)
         {
+            displayMessage(MSG_INV_UP);
             return;
         }
     }
     else
     {
+        displayMessage(MSG_INV_UP);
         return;
     }
     data.clear();
@@ -296,6 +303,7 @@ void layerUp(Layer &layer, stringstream &ss)
     ss >> data;
     if (!data.empty())
     {
+        displayMessage(MSG_INV_UP);
         return;
     }
     data.clear();
@@ -330,11 +338,13 @@ void layerDown(Layer &layer, stringstream &ss)
 
         if (amount < 1)
         {
+            displayMessage(MSG_INV_UP);
             return;
         }
     }
     else
     {
+        displayMessage(MSG_INV_UP);
         return;
     }
     data.clear();
@@ -343,6 +353,7 @@ void layerDown(Layer &layer, stringstream &ss)
     ss >> data;
     if (!data.empty())
     {
+        displayMessage(MSG_INV_UP);
         return;
     }
     data.clear();
@@ -381,11 +392,13 @@ void removeComponent(Layer &layer, stringstream &ss)
         /* Validate x position */
         if (xPos < 0 || xPos > xSize)
         {
+            displayMessage(MSG_INV_REMOVE);
             return;
         }
     }
     else
     {
+        displayMessage(MSG_INV_REMOVE);
         return;
     }
     data.clear();
@@ -400,11 +413,13 @@ void removeComponent(Layer &layer, stringstream &ss)
         /* Validate y position */
         if (yPos < 0 || yPos > ySize)
         {
+            displayMessage(MSG_INV_REMOVE);
             return;
         }
     }
     else
     {
+        displayMessage(MSG_INV_REMOVE);
         return;
     }
     data.clear();
@@ -413,6 +428,7 @@ void removeComponent(Layer &layer, stringstream &ss)
     ss >> data;
     if (!data.empty())
     {
+        displayMessage(MSG_INV_REMOVE);
         return;
     }
     data.clear();
@@ -444,6 +460,7 @@ void setup(Layer &layer, stringstream &ss)
     }
     else
     {
+        displayMessage(MSG_INV_SETUP);
         return;
     }
     data.clear();
@@ -456,6 +473,7 @@ void setup(Layer &layer, stringstream &ss)
     }
     else
     {
+        displayMessage(MSG_INV_SETUP);
         return;
     }
     data.clear();
@@ -464,6 +482,7 @@ void setup(Layer &layer, stringstream &ss)
     ss >> data;
     if (!data.empty())
     {
+        displayMessage(MSG_INV_SETUP);
         return;
     }
     data.clear();

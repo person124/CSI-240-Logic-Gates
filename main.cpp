@@ -43,6 +43,7 @@ int main()
 
         case SETUP:
             setup(layer, ss);
+            break;
 
         default:
             destination = ENTRY;
