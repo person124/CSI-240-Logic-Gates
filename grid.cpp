@@ -9,7 +9,7 @@ Grid::Grid(int w, int h)
     for (int i = 0; i < mWidth; i++)
     {
         mGrid[i] = new Component[mHeight];
-        for (int j = 0; i < mHeight; j++)
+        for (int j = 0; j < mHeight; j++)
             mGrid[i][j] = Component();
     }
 }
