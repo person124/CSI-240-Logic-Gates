@@ -204,7 +204,7 @@ void getInput(stringstream &ss)
 CommandType getCommandType(stringstream &ss)
 {
     string      data = "";
-    CommandType type  = EMPTY;
+    CommandType type  = NONE;
 
     ss >> data;
     for (int i = 0; i < COMMAND_SIZE; i++)
