@@ -13,69 +13,83 @@ void execute(Layer& layer, StartingList& list)
     {
         StartingPos* pos = list.get(i);
         Component c = layer.get(pos->mL)->get(pos->mX, pos->mY);
-        invokeStart(layer, pos, c, Charge::charged);
+        invokeStart(layer, pos, c, true);
     }
 }
 
-void invokeStart(Layer& layer, StartingPos* pos, Component& c, Charge charge)
+void invokeGate(Layer& layer, int l, int x, int y, bool charge, char dir)
+{
+    Grid* g = layer.get(l);
+    string id = g->get(x, y).getID();
+
+    bool chargeUp = g->get(x, y - 1).getCharge();
+    bool chargeDown = g->get(x, y + 1).getCharge();
+
+    bool gCharge = false; // = SomeChargeFunc(id, chargeUp, chargeDown);
+    g->get(x, y).setCharged(gCharge);
+    pokeLoc(layer, l, x + 1, y, gCharge, 'r');
+}
+
+void invokeLight(Layer& layer, int l, int x, int y, bool charge)
+{
+    Component c = layer.get(l)->get(x, y);
+    c.setCharged(charge);
+}
+
+void invokeNot(Layer& layer, int l, int x, int y, bool charge)
+{
+    Component c = layer.get(l)->get(x, y);
+    c.setCharged(!charge);
+    pokeLoc(layer, l, x + 1, y, c.getCharge(), 'l');
+}
+
+void invokeStart(Layer& layer, StartingPos* pos, Component& c, bool charge)
 {
     c.setCharged(charge);
-	poke(layer, pos->mL, pos->mX, pos->mY, charge);
+    poke(layer, pos->mL, pos->mX, pos->mY, charge);
 }
 
-void invokeLight(Layer& layer, int l, int x, int y, Charge charge)
+void invokeWire(Layer& layer, int l, int x, int y, bool charge)
 {
-	Component c = layer.get(l)->get(x, y);
-	c.setCharged(charge);
-}
-
-void invokeNot(Layer& layer, int l, int x, int y, Charge charge)
-{
-	Component c = layer.get(l)->get(x, y);
-	c.setCharged(charge == charged ? noCharge : charge);
-	poke(layer, l, x + 1, y, c.getCharge());
-}
-
-void invokeWire(Layer& layer, int l, int x, int y, Charge charge)
-{
-	Component c = layer.get(l)->get(x, y);
-	c.setCharged(charge);
-	poke(layer, l, x, y, charge);
+    Component c = layer.get(l)->get(x, y);
+    c.setCharged(charge);
+    poke(layer, l, x, y, charge);
 }
 
 bool isGate(string id)
 {
-	return id == "AND" || id == "NAND" || id == "OR" || id == "NOR" || id == "XOR" || id == "XNOR";
+    return id == "AND" || id == "NAND" || id == "OR" || id == "NOR" || id == "XOR"
+            || id == "XNOR";
 }
 
-void poke(Layer& layer, int l, int x, int y, Charge charge)
+void poke(Layer& layer, int l, int x, int y, bool charge)
 {
-	pokeLoc(layer, l, x - 1, y, charge, 'r'); //Left
-	pokeLoc(layer, l, x, y - 1, charge, 'd'); //Up
-	pokeLoc(layer, l, x + 1, y, charge, 'l'); //Right
-	pokeLoc(layer, l, x, y + 1, charge, 'u'); //Down
+    pokeLoc(layer, l, x - 1, y, charge, 'r'); //Left
+    pokeLoc(layer, l, x, y - 1, charge, 'd'); //Up
+    pokeLoc(layer, l, x + 1, y, charge, 'l'); //Right
+    pokeLoc(layer, l, x, y + 1, charge, 'u'); //Down
 }
 
-void pokeLoc(Layer& layer, int l, int x, int y, Charge charge, char dir)
+void pokeLoc(Layer& layer, int l, int x, int y, bool charge, char dir)
 {
-	Component c = layer.get(l)->get(x, y);
-	if (c.getID() == "NULL" || c.getID() == "POWER")
-		return;
-	else if (c.getID() == "WIRE" && !wireCheck(charge, c.getCharge()))
-		invokeWire(layer, l, x, y, charge);
-	else if (c.getID() == "LIGHT")
-		invokeLight(layer, l, x, y, charge);
-	else if (c.getID() == "NOT" && dir == 'l')
-		invokeNot(layer, l, x, y, charge);
-	else if (isGate(c.getID()))
-		return;
+    Component c = layer.get(l)->get(x, y);
+    if (c.getID() == "NULL" || c.getID() == "POWER")
+        return;
+    else if (c.getID() == "WIRE" && !wireCheck(charge, c.getCharge()))
+        invokeWire(layer, l, x, y, charge);
+    else if (c.getID() == "LIGHT")
+        invokeLight(layer, l, x, y, charge);
+    else if (c.getID() == "NOT" && dir == 'l')
+        invokeNot(layer, l, x, y, charge);
+    else if ((dir == 'd' || dir == 'u') && isGate(c.getID()))
+        invokeGate(layer, l, x, y, charge, dir);
 }
 
-bool wireCheck(Charge in, Charge out)
+bool wireCheck(bool in, bool out)
 {
-	if (in == out)
-		return true;
-	if (in == noCharge && out == charged)
-		return true;
-	return false;
+    if (in == out)
+        return true;
+    if (!in && out)
+        return true;
+    return false;
 }

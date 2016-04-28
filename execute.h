@@ -8,13 +8,14 @@
 #include "startingPos.h"
 
 void execute(Layer&, StartingList&);
-void invokeStart(Layer&, StartingPos*, Component&, Charge);
-void invokeLight(Layer&, int, int, int, Charge);
-void invokeNot(Layer&, int, int, int, Charge);
-void invokeWire(Layer&, int, int, int, Charge);
+void invokeGate(Layer&, int, int, int, bool, char);
+void invokeLight(Layer&, int, int, int, bool);
+void invokeNot(Layer&, int, int, int, bool);
+void invokeStart(Layer&, StartingPos*, Component&, bool);
+void invokeWire(Layer&, int, int, int, bool);
 bool isGate(string);
-void poke(Layer&, int, int, int, Charge);
-void pokeLoc(Layer&, int, int, int, Charge, char);
-bool wireCheck(Charge, Charge);
+void poke(Layer&, int, int, int, bool);
+void pokeLoc(Layer&, int, int, int, bool, char);
+bool wireCheck(bool, bool);
 
 #endif
