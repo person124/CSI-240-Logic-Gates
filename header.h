@@ -84,7 +84,7 @@ const string COMPONENT_ON[COMPONENT_SIZE + 1]
 
 /* MESSAGE
  ******************************************************************************/
-const int MESSAGE_SIZE = 7;
+const int MESSAGE_SIZE = 8;
 const string MESSAGE_TEXT[MESSAGE_SIZE]
 {
     "WARNING: Unrecognized command.",
@@ -93,7 +93,8 @@ const string MESSAGE_TEXT[MESSAGE_SIZE]
     "WARNING: Failed to move up layers.\nFormat: UP <z>",
     "WARNING: Failed to move down layers.\nFormat: DOWN <z>",
     "WARNING: Failed to run.\nFormat: RUN",
-    "WARNING: Failed to setup.\nFormat: SETUP <x> <y>"
+    "WARNING: Failed to setup.\nFormat: SETUP <x> <y>",
+    "Shutting down. Goodbye!"
 };
 enum MESSAGE_TYPE
 {
@@ -104,7 +105,8 @@ enum MESSAGE_TYPE
     MSG_INV_DOWN,
     MSG_INV_RUN,
     MSG_INV_SETUP,
-    MSG_INV_QUIT
+    MSG_INV_QUIT,
+    MSG_SHUTDOWN
 };
 
 /* FUNCTIONS

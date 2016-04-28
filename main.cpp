@@ -12,6 +12,7 @@ int main()
         utls::clear();
 
         /* Display interface */
+        displayComponents();
         displayGrid(layer);
         displayCommands();
 
@@ -46,10 +47,11 @@ int main()
             break;
 
         case QUIT:
+            displayMessage(MSG_SHUTDOWN);
             break;
 
         default:
-            destination = QUIT;
+            destination = NONE;
         }
         ss.clear();
     }
