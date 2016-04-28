@@ -22,7 +22,7 @@ class StartingList
             }
             Node(StartingPos pos)
             {
-                *mData = pos;
+                mData = &pos;
                 mNext = NULL;
             }
         };
