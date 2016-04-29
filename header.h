@@ -110,20 +110,19 @@ enum MESSAGE_TYPE
 /* FUNCTIONS
  ******************************************************************************/
 void addComponent(Layer &layer, StartingList &startingList, stringstream &ss);
+void changeLayer(Layer &layer, stringstream &ss, CommandType direction);
 void displayGrid(Layer &layer);
 void displayCommands();
 void displayComponents();
 void displayMessage(MESSAGE_TYPE code);
+void getInput(stringstream &ss);
+bool hasJunk(stringstream &ss);
+bool isPosition(Layer &layer, const int x, const int y);
 CommandType readCommandType(stringstream &ss);
 ComponentType readComponentType(string id);
 ComponentType readComponentType(stringstream &ss);
-void getInput(stringstream &ss);
-void changeLayer(Layer &layer, stringstream &ss, CommandType direction);
+int  readNumber(stringstream&ss);
 void removeComponent(Layer &layer, StartingList &startingList, stringstream &ss);
 void resize(Layer &layer, StartingList &startingList, stringstream &ss);
-
-bool hasJunk(stringstream &ss);
-int  readNumber(stringstream&ss);
-bool isPosition(Layer &layer, const int x, const int y);
 
 #endif

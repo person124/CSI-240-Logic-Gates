@@ -14,9 +14,7 @@ void addComponent(Layer &layer, StartingList &startingList, stringstream &ss)
     string        data         = "";
     ComponentType type         = EMPTY;
     int           xPos         = -1;
-    int           xSize        = 0;
     int           yPos         = -1;
-    int           ySize        = 0;
 
     currentLayer = layer.getCurrentLayer();
 
@@ -45,6 +43,51 @@ void addComponent(Layer &layer, StartingList &startingList, stringstream &ss)
         {
             displayMessage(MSG_INV_ADD);
         }
+    }
+}
+
+
+/* Purpose:  To move the user up down a given number of layers
+ *     Pre:  Current layer exists,
+ *           stringstream with move amount
+ *    Post:  Moves user down by a given number of layers
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
+void changeLayer(Layer &layer, stringstream &ss, CommandType direction)
+{
+    string data = "";
+    int    amount = 0;
+
+    /* Read command data */
+    amount = readNumber(ss);
+
+    /* If type and position are valid */
+    if (!hasJunk(ss))
+    {
+        /* If not negative input */
+        if (amount > 0)
+        {
+            /* Change given amount of layers */
+            for (int i = 0; i < amount; i++)
+            {
+                if (direction == UP)
+                {
+                    ++layer;
+                }
+                else if (direction == DOWN)
+                {
+                    --layer;
+                }
+            }
+        }
+        else
+        {
+            displayMessage(MSG_INV_LAYER);
+        }
+    }
+    else
+    {
+        displayMessage(MSG_INV_LAYER);
     }
 }
 
@@ -154,6 +197,58 @@ void getInput(stringstream &ss)
 }
 
 
+/* Purpose:  To check if stringstream contains data
+ *     Pre:  stringstream
+ *    Post:  Returns true if stringstream contains data, or else returns false
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
+bool hasJunk(stringstream &ss)
+{
+    string data = "";
+    bool   isJunk = false;
+
+    ss >> data;
+
+    if (!data.empty())
+    {
+        isJunk = true;
+    }
+
+    return isJunk;
+}
+
+
+/* Purpose:  To check if an x and y position exists on current layer
+ *     Pre:  Current layer exists,
+ *           x and y integers
+ *    Post:  Returns true if x and y position exists on current layer
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
+bool isPosition(Layer &layer, const int xPos, const int yPos)
+{
+    bool isPosition = true;
+
+    int currentLayer = 0;
+    int xWidth       = 0;
+    int yHeight      = 0;
+
+    currentLayer = layer.getCurrentLayer();
+    xWidth       = layer.get(currentLayer)->getWidth();
+    yHeight      = layer.get(currentLayer)->getHeight();
+
+    if (xPos < 0 || xPos > xWidth)
+    {
+        isPosition = false;
+    }
+    else if (yPos < 0 || yPos > yHeight)
+    {
+        isPosition = false;
+    }
+
+    return isPosition;
+}
+
+
 /* Purpose:  To read a command type from the user's input
  *     Pre:  Stringstream containing user input
  *    Post:  Returns command type (ENTRY for invalid input)
@@ -223,48 +318,24 @@ ComponentType readComponentType(stringstream &ss)
 }
 
 
-/* Purpose:  To move the user up down a given number of layers
- *     Pre:  Current layer exists,
- *           stringstream with move amount
- *    Post:  Moves user down by a given number of layers
+/* Purpose:  To read an integer from the user's input stream
+ *     Pre:  Stringstream containing user input
+ *    Post:  Returns integer (-1 for invalid input)
  *  Author:  Matthew James Harrison
  ******************************************************************************/
-void changeLayer(Layer &layer, stringstream &ss, CommandType direction)
+int readNumber(stringstream&ss)
 {
-    string data = "";
-    int    amount = 0;
+    string data   = "";
+    int    number = -1;
 
-    /* Read command data */
-    amount = readNumber(ss);
+    ss >> data;
 
-    /* If type and position are valid */
-    if (!hasJunk(ss))
+    if (utls::isDigit(data))
     {
-        /* If not negative input */
-        if (amount > 0)
-        {
-            /* Change given amount of layers */
-            for (int i = 0; i < amount; i++)
-            {
-                if (direction == UP)
-                {
-                    ++layer;
-                }
-                else if (direction == DOWN)
-                {
-                    --layer;
-                }
-            }
-        }
-        else
-        {
-            displayMessage(MSG_INV_LAYER);
-        }
+        number = stoi(data);
     }
-    else
-    {
-        displayMessage(MSG_INV_LAYER);
-    }
+
+    return number;
 }
 
 
@@ -282,9 +353,7 @@ void removeComponent(Layer &layer, StartingList &startingList, stringstream &ss)
     int    currentLayer = 0;
     string data         = "";
     int    xPos         = -1;
-    int    xSize        = 0;
     int    yPos         = -1;
-    int    ySize        = 0;
 
     currentLayer = layer.getCurrentLayer();
 
@@ -373,58 +442,4 @@ void resize(Layer &layer, StartingList &startingList, stringstream &ss)
     {
         displayMessage(MSG_INV_RESIZE);
     }
-}
-
-bool hasJunk(stringstream &ss)
-{
-    string data = "";
-    bool   isJunk = false;
-
-    ss >> data;
-
-    if (!data.empty())
-    {
-        isJunk = true;
-    }
-
-    return isJunk;
-}
-
-int readNumber(stringstream&ss)
-{
-    string data   = "";
-    int    number = -1;
-
-    ss >> data;
-
-    if (utls::isDigit(data))
-    {
-        number = stoi(data);
-    }
-
-    return number;
-}
-
-bool isPosition(Layer &layer, const int xPos, const int yPos)
-{
-    bool isPosition = true;
-
-    int currentLayer = 0;
-    int xWidth       = 0;
-    int yHeight      = 0;
-
-    currentLayer = layer.getCurrentLayer();
-    xWidth       = layer.get(currentLayer)->getWidth();
-    yHeight      = layer.get(currentLayer)->getHeight();
-
-    if (xPos < 0 || xPos > xWidth)
-    {
-        isPosition = false;
-    }
-    else if (yPos < 0 || yPos > yHeight)
-    {
-        isPosition = false;
-    }
-
-    return isPosition;
 }

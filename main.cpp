@@ -47,7 +47,6 @@ int main()
             break;
 
         case QUIT:
-            displayMessage(MSG_SHUTDOWN);
             break;
 
         default:
@@ -56,6 +55,8 @@ int main()
         ss.clear();
     }
     while (destination != QUIT);
+
+    displayMessage(MSG_SHUTDOWN);
 
     return 0;
 }
