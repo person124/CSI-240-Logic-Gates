@@ -18,6 +18,9 @@
 using namespace std;
 
 
+const int GRID_MAX = 255;
+
+
 /* COMMAND PARSING SYSTEM
  ******************************************************************************/
 enum CommandType
@@ -54,35 +57,51 @@ enum ComponentType
     POWER,
     WIRE,
     LIGHT,
-
     EMPTY
 };
 
-const int    COMPONENT_SIZE = 3;
+const int    COMPONENT_SIZE = 10;
 
 const string COMPONENT_NAME[COMPONENT_SIZE]
 {
     "POWER",
     "WIRE",
     "LIGHT",
+    "EMPTY",
+    "AND",
+    "NAND",
+    "OR",
+    "NOR",
+    "XOR",
+    "XNOR"
 };
 
-const string COMPONENT_OFF[COMPONENT_SIZE + 1]
+const string COMPONENT_OFF[COMPONENT_SIZE]
 {
     "  P  ",
     "  +  ",
-    "  .  ",
-
+    " |.| ",
     "  -  "
+    " and ",
+    " nand",
+    "  or ",
+    " nor ",
+    " xor ",
+    " xnor"
 };
 
-const string COMPONENT_ON[COMPONENT_SIZE + 1]
+const string COMPONENT_ON[COMPONENT_SIZE]
 {
     "  P  ",
     "  *  ",
-    "  !  ",
-
-    "  -  "
+    " |!| ",
+    "  -  ",
+    " AND ",
+    " NAND",
+    "  OR ",
+    " NOR ",
+    " XOR ",
+    " XNOR"
 };
 
 

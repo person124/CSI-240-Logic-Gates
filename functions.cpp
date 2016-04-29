@@ -11,6 +11,7 @@ void addComponent(Layer &layer, StartingList &startingList, stringstream &ss)
     Component     component;
     int           currentLayer = 0;
     string        data         = "";
+    Component     tmp;
     ComponentType type         = EMPTY;
     int           xPos         = -1;
     int           yPos         = -1;
@@ -28,11 +29,19 @@ void addComponent(Layer &layer, StartingList &startingList, stringstream &ss)
         /* If type and position are valid */
         if (isPosition(layer, xPos, yPos) && type != EMPTY)
         {
+            tmp = layer.get(currentLayer)->get(xPos, yPos);
+
+            /* If the target position has a power component */
+            if (tmp.getID() == COMPONENT_NAME[static_cast<int>(POWER)])
+            {
+                startingList.remove(currentLayer, xPos, yPos);
+            }
+
             /* Add the component */
             component = Component(COMPONENT_NAME[static_cast<int>(type)]);
             layer.get(currentLayer)->set(xPos, yPos, component);
 
-            /* Special case for adding power component */
+            /* If adding a power component */
             if (type == POWER)
             {
                 startingList.add(currentLayer, xPos, yPos);
@@ -470,8 +479,9 @@ void resize(Layer &layer, StartingList &startingList, stringstream &ss)
     /* If no junk data */
     if (!hasJunk(ss))
     {
-        /* If valid size */
-        if (xSizeNew > 0 && ySizeNew > 0)
+        /* If valid grid size */
+        if (xSizeNew > 0 && ySizeNew > 0
+            && xSizeNew <= GRID_MAX && ySizeNew <= GRID_MAX)
         {
             for (int i = 0; i < startingList.getCount(); i++)
             {
