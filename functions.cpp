@@ -46,10 +46,10 @@ void addComponent(Layer &layer, StartingList &startingList, stringstream &ss)
 }
 
 
-/* Purpose:  To move the user up down a given number of layers
+/* Purpose:  To move the user up or down by a given number of layers
  *     Pre:  Current layer exists,
  *           stringstream with move amount
- *    Post:  Moves user down by a given number of layers
+ *    Post:  Moves user up or down by a given number of layers
  *  Author:  Matthew James Harrison
  ******************************************************************************/
 void changeLayer(Layer &layer, stringstream &ss, CommandType direction)
@@ -60,11 +60,11 @@ void changeLayer(Layer &layer, stringstream &ss, CommandType direction)
     /* Read command data */
     amount = readNumber(ss);
 
-    /* If type and position are valid */
+    /* If no junk data */
     if (!hasJunk(ss))
     {
-        /* If not negative input */
-        if (amount > 0)
+        /* If not negative amount */
+        if (amount >= 0)
         {
             /* Change given amount of layers */
             for (int i = 0; i < amount; i++)
@@ -109,14 +109,44 @@ void displayGrid(Layer &layer)
     height       = layer.get(currentLayer)->getHeight();
     width        = layer.get(currentLayer)->getWidth();
 
+    /* Display top guide */
+    cout << "     ";
+    for (int i = 0; i < width; i++)
+    {
+        if (i < 10)
+        {
+            cout << "  " << i << "  ";
+        }
+        else if (i < 100)
+        {
+            cout << "  " << i << " ";
+        }
+        else if (i < 1000)
+        {
+            cout << " " << i << " ";
+        }
+        else
+        {
+            cout << "  " << "?" << "  ";
+        }
+    }
+    cout << endl << endl << endl;
+
+    /* Traverse each row */
     for (int i = 0; i < height; i++)
     {
+        /* Display left guide */
+        cout << "  " << i << "  ";
+
+        /* Traverse each column of current row */
         for (int j = 0; j < width; j++)
         {
+            /* Get current component data */
             tmp  = layer.get(currentLayer)->get(j, i);
             id   = tmp.getID();
             type = readComponentType(id);
     
+            /* Display on or off graphic */
             if (tmp.getCharge())
             {
                 cout << COMPONENT_ON[static_cast<int>(type)];
@@ -126,12 +156,38 @@ void displayGrid(Layer &layer)
                 cout << COMPONENT_OFF[static_cast<int>(type)];
             }
         }
-        cout << endl << endl;
+        /* Display right guide */
+        cout << "  " << i << "  " << endl << endl;
 
+        /* Reset component data */
         tmp = Component();
         id.clear();
+
+        cout << endl;
     }
-    cout << endl;
+
+    /* Display bottom guide */
+    cout << "     ";
+    for (int i = 0; i < width; i++)
+    {
+        if (i < 10)
+        {
+            cout << "  " << i << "  ";
+        }
+        else if (i < 100)
+        {
+            cout << "  " << i << " ";
+        }
+        else if (i < 1000)
+        {
+            cout << " " << i << " ";
+        }
+        else
+        {
+            cout << "  " << "?" << "  ";
+        }
+    }
+    cout << endl << endl;
 }
 
 
@@ -146,7 +202,7 @@ void displayCommands()
     {
         cout << right << setw(15) << COMMAND_NAME[i];
     }
-    cout << endl;
+    cout << endl << endl;
 }
 
 
@@ -161,7 +217,7 @@ void displayComponents()
     {
         cout << right << setw(15) << COMPONENT_NAME[i];
     }
-    cout << endl;
+    cout << endl << endl;
 }
 
 
@@ -440,5 +496,35 @@ void resize(Layer &layer, StartingList &startingList, stringstream &ss)
     else
     {
         displayMessage(MSG_INV_RESIZE);
+    }
+}
+
+
+/* Purpose:  To execute the grid and display current layer
+ *     Pre:  Current layer exists,
+ *           Starting list exists,
+ *           stringstream with user input
+ *    Post:  Executes the grid and displays current layer
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
+void run(Layer &layer, StartingList &startingList, stringstream &ss)
+{
+    /* If no junk data */
+    if (!hasJunk(ss))
+    {
+        /* Execute */
+        execute(layer, startingList, true);
+
+        /* Display */
+        utls::clear();
+        displayGrid(layer);
+        displayMessage(MSG_EXECUTE);
+
+        /* Revert */
+        execute(layer, startingList, false);
+    }
+    else
+    {
+        displayMessage(MSG_INV_COMMAND);
     }
 }
