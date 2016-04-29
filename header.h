@@ -65,6 +65,7 @@ enum ComponentType
     NOR,
     XOR,
     XNOR,
+    NOT,
 
     EMPTY
 };
