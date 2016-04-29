@@ -24,6 +24,8 @@ public:
 
 	void operator=(const string &aString);
 
+	bool getGateOutput(string, bool, bool);
+
 protected:
 	string ID;
 	bool isCharged;
