@@ -533,13 +533,8 @@ void run(Layer &layer, StartingList &startingList, stringstream &ss)
         displayGrid(layer);
         displayMessage(MSG_EXECUTE);
 
-<<<<<<< HEAD
         /* Revert by loading file */
         loadFromFile(DATA_PATH, layer);
-=======
-        /* Revert */
-        //execute(layer, startingList, false);
->>>>>>> origin/master
     }
     else
     {
