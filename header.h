@@ -9,6 +9,7 @@
 #include "Utilities.h"
 
 #include "grid.h"
+#include "filework.h"
 #include "layer.h"
 #include "component.h"
 #include "execute.h"
@@ -57,57 +58,59 @@ enum ComponentType
     POWER,
     WIRE,
     LIGHT,
-    EMPTY,
     AND,
     NAND,
     OR,
     NOR,
     XOR,
-    XNOR
+    XNOR,
+
+    EMPTY
 };
 
-const int    COMPONENT_SIZE = 10;
+const int    COMPONENT_SIZE = 9;
 
 const string COMPONENT_NAME[COMPONENT_SIZE]
 {
     "POWER",
     "WIRE",
     "LIGHT",
-    "EMPTY",
     "AND",
     "NAND",
     "OR",
     "NOR",
     "XOR",
-    "XNOR"
+    "XNOR",
 };
 
-const string COMPONENT_OFF[COMPONENT_SIZE]
+const string COMPONENT_OFF[COMPONENT_SIZE + 1]
 {
-    "  P  ",
+    " |P| ",
     "  +  ",
     " |.| ",
-    "  -  "
     " and ",
     " nand",
     "  or ",
     " nor ",
     " xor ",
-    " xnor"
+    " xnor",
+
+    "  -  "
 };
 
-const string COMPONENT_ON[COMPONENT_SIZE]
+const string COMPONENT_ON[COMPONENT_SIZE + 1]
 {
-    "  P  ",
+    " |P| ",
     "  *  ",
     " |!| ",
-    "  -  ",
     " AND ",
     " NAND",
     "  OR ",
     " NOR ",
     " XOR ",
-    " XNOR"
+    " XNOR",
+
+    "  -  "
 };
 
 
@@ -140,7 +143,7 @@ const string MESSAGE_TEXT[MESSAGE_SIZE]
 };
 
 
-/* FUNCTIONS
+/* FRONT-END FUNCTIONS
  ******************************************************************************/
 void addComponent(Layer &layer, StartingList &startingList, stringstream &ss);
 void changeLayer(Layer &layer, stringstream &ss, CommandType direction);
