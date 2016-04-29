@@ -11,7 +11,6 @@ void execute(Layer&, StartingList&, bool);
 void invokeGate(Layer&, int, int, int, bool, char);
 void invokeLight(Layer&, int, int, int, bool);
 void invokeNot(Layer&, int, int, int, bool);
-void invokeStart(Layer&, StartingPos*, Component&, bool);
 void invokeWire(Layer&, int, int, int, bool);
 bool isGate(string);
 void poke(Layer&, int, int, int, bool);

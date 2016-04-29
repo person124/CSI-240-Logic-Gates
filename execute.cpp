@@ -13,8 +13,9 @@ void execute(Layer& layer, StartingList& list, bool charge)
     for (int i = 0; i < list.getCount(); i++)
     {
         StartingPos* pos = list.get(i);
-        Component c = layer.get(pos->mL)->get(pos->mX, pos->mY);
-        invokeStart(layer, pos, c, charge);
+        Component* c = &layer.get(pos->mL)->get(pos->mX, pos->mY);
+        c.setCharged(charge);
+        poke(layer, pos->mL, pos->mX, pos->mY, charge);
     }
 }
 
@@ -26,37 +27,29 @@ void invokeGate(Layer& layer, int l, int x, int y, bool charge, char dir)
     bool chargeUp = g->get(x, y - 1).getCharge();
     bool chargeDown = g->get(x, y + 1).getCharge();
 
-    bool gCharge = false; // = SomeChargeFunc(id, chargeUp, chargeDown);
-    if (gCharge != g->get(x, y).getCharge())
+    Component* c = &g->get(x, y);
+    bool gCharge = c.getGateOutput(id, chargeUp, chargeDown);
+    if (gCharge != c.getCharge())
     {
-        g->get(x, y).setCharged(gCharge);
+        c.setCharged(gCharge);
         pokeLoc(layer, l, x + 1, y, gCharge, 'r');
     }
 }
 
 void invokeLight(Layer& layer, int l, int x, int y, bool charge)
 {
-    Component c = layer.get(l)->get(x, y);
-    c.setCharged(charge);
+    layer.get(l)->get(x, y).setCharged(charge);
 }
 
 void invokeNot(Layer& layer, int l, int x, int y, bool charge)
 {
-    Component c = layer.get(l)->get(x, y);
-    c.setCharged(!charge);
-    pokeLoc(layer, l, x + 1, y, c.getCharge(), 'l');
-}
-
-void invokeStart(Layer& layer, StartingPos* pos, Component& c, bool charge)
-{
-    c.setCharged(charge);
-    poke(layer, pos->mL, pos->mX, pos->mY, charge);
+    layer.get(l)->get(x, y).setCharged(!charge);
+    pokeLoc(layer, l, x + 1, y, !charge, 'l');
 }
 
 void invokeWire(Layer& layer, int l, int x, int y, bool charge)
 {
-    Component c = layer.get(l)->get(x, y);
-    c.setCharged(charge);
+    layer.get(l)->get(x, y).setCharged(charge);
     poke(layer, l, x, y, charge);
 }
 
@@ -76,7 +69,7 @@ void poke(Layer& layer, int l, int x, int y, bool charge)
 
 void pokeLoc(Layer& layer, int l, int x, int y, bool charge, char dir)
 {
-    Component c = layer.get(l)->get(x, y);
+    Component* c = &layer.get(l)->get(x, y);
     if (c.getID() == "WIRE" && !wireCheck(charge, c.getCharge()))
         invokeWire(layer, l, x, y, charge);
     else if (c.getID() == "LIGHT")
