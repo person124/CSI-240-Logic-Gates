@@ -122,7 +122,7 @@ void changeLayer(Layer &layer, stringstream &ss, CommandType direction);
 void removeComponent(Layer &layer, StartingList &startingList, stringstream &ss);
 void resize(Layer &layer, StartingList &startingList, stringstream &ss);
 
-bool isReadJunk(stringstream &ss);
+bool hasJunk(stringstream &ss);
 int  readNumber(stringstream&ss);
 bool isPosition(Layer &layer, const int x, const int y);
 
