@@ -57,7 +57,13 @@ enum ComponentType
     POWER,
     WIRE,
     LIGHT,
-    EMPTY
+    EMPTY,
+    AND,
+    NAND,
+    OR,
+    NOR,
+    XOR,
+    XNOR
 };
 
 const int    COMPONENT_SIZE = 10;
