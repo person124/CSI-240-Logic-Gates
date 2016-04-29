@@ -1,5 +1,8 @@
 #include "header.h"
 
+/* Purpose:  Program main loop
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
 int main()
 {
     Layer layer;
@@ -10,6 +13,7 @@ int main()
     do
     {
         utls::clear();
+        ss.clear();
 
         /* Display interface */
         displayComponents();
@@ -39,7 +43,12 @@ int main()
             break;
 
         case RUN:
-            execute(layer, startingList);
+            execute(layer, startingList, true);
+            utls::clear();
+            displayGrid(layer);
+            utls::pause();
+            execute(layer, startingList, false);
+
             break;
 
         case RESIZE:
@@ -47,16 +56,15 @@ int main()
             break;
 
         case QUIT:
+            displayMessage(MSG_SHUTDOWN);
             break;
 
         default:
+            displayMessage(MSG_INV_COMMAND);
             destination = NONE;
         }
-        ss.clear();
     }
     while (destination != QUIT);
-
-    displayMessage(MSG_SHUTDOWN);
 
     return 0;
 }

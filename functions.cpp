@@ -9,7 +9,6 @@
 void addComponent(Layer &layer, StartingList &startingList, stringstream &ss)
 {
     Component     component;
-
     int           currentLayer = 0;
     string        data         = "";
     ComponentType type         = EMPTY;
@@ -55,8 +54,8 @@ void addComponent(Layer &layer, StartingList &startingList, stringstream &ss)
  ******************************************************************************/
 void changeLayer(Layer &layer, stringstream &ss, CommandType direction)
 {
-    string data = "";
     int    amount = 0;
+    string data = "";
 
     /* Read command data */
     amount = readNumber(ss);
@@ -175,6 +174,8 @@ void displayMessage(MESSAGE_TYPE code)
 {
     cout << endl << MESSAGE_TEXT[static_cast<int>(code)] << endl;
 
+    cout << "Press return to continue . . . ";
+
     utls::pause();
 }
 
@@ -204,7 +205,7 @@ void getInput(stringstream &ss)
  ******************************************************************************/
 bool hasJunk(stringstream &ss)
 {
-    string data = "";
+    string data   = "";
     bool   isJunk = false;
 
     ss >> data;
@@ -226,9 +227,8 @@ bool hasJunk(stringstream &ss)
  ******************************************************************************/
 bool isPosition(Layer &layer, const int xPos, const int yPos)
 {
-    bool isPosition = true;
-
     int currentLayer = 0;
+    bool isPosition  = true;
     int xWidth       = 0;
     int yHeight      = 0;
 
@@ -347,13 +347,12 @@ int readNumber(stringstream&ss)
  ******************************************************************************/
 void removeComponent(Layer &layer, StartingList &startingList, stringstream &ss)
 {
+    int       currentLayer = 0;
+    string    data         = "";
+    string    id           = "";
     Component tmp;
-    string    id = "";
-
-    int    currentLayer = 0;
-    string data         = "";
-    int    xPos         = -1;
-    int    yPos         = -1;
+    int       xPos         = -1;
+    int       yPos         = -1;
 
     currentLayer = layer.getCurrentLayer();
 

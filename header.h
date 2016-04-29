@@ -84,27 +84,28 @@ const string COMPONENT_ON[COMPONENT_SIZE + 1]
 
 /* MESSAGE
  ******************************************************************************/
-const int MESSAGE_SIZE = 7;
+const int MESSAGE_SIZE = 8;
 const string MESSAGE_TEXT[MESSAGE_SIZE]
 {
     "WARNING: Unrecognized command.",
-    "WARNING: Failed to add component.\nFormat: ADD <TYPE> <x> <y>",
-    "WARNING: Failed to remove component.\nFormat: REMOVE <x> <y>",
-    "WARNING: Failed to move change layers.\nFormat: DOWN <z> | UP <z>",
-    "WARNING: Failed to run.\nFormat: RUN",
-    "WARNING: Failed to setup.\nFormat: SETUP <x> <y>",
-    "WARNING: Preparing to terminate.\nGoodbye!"
+    "WARNING: Failed to add component. Format: ADD <TYPE> <x> <y>",
+    "WARNING: Failed to remove component. Format: REMOVE <x> <y>",
+    "WARNING: Failed to change layers. Format: DOWN <z> | UP <z>",
+    "WARNING: Failed to resize. Format: RESIZE <x> <y>",
+    "WARNING: Failed to setup. Format: SETUP <x> <y>",
+    "Preparing to terminate. Goodbye!",
+    "Execute complete."
 };
 enum MESSAGE_TYPE
 {
-    MSG_INV_CMD,
+    MSG_INV_COMMAND,
     MSG_INV_ADD,
     MSG_INV_REMOVE,
     MSG_INV_LAYER,
-    MSG_INV_RUN,
     MSG_INV_RESIZE,
     MSG_INV_QUIT,
-    MSG_SHUTDOWN
+    MSG_SHUTDOWN,
+    MSG_EXECUTE
 };
 
 /* FUNCTIONS
