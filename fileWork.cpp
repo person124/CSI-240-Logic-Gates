@@ -19,11 +19,13 @@ int getIntFromID(string name)
 
 bool loadFromFile(string fileName, Layer& layer)
 {
+    layer.~Layer();
     ifstream in(fileName.c_str());
-    if (!in.fail())
+    if (in.fail())
         return false;
 
-    int count = in.get();
+    int count, id, w, h;
+    in >> count;
     for (int i = 0; i < count; i++)
     {
         Grid* g;
@@ -31,14 +33,15 @@ bool loadFromFile(string fileName, Layer& layer)
             layer.add(i, new Grid());
         g = layer.get(i);
 
-        int w = in.get(), h = in.get();
+        in >> w >> h;
         g->resize(w, h);
 
         for (int j = 0; j < w * h; j++)
         {
             int x = j % w;
             int y = j / w;
-            g->set(x, y, Component(getIDFromInt(in.get())));
+            in >> id;
+            g->set(x, y, Component(getIDFromInt(id)));
         }
     }
 
@@ -52,19 +55,19 @@ bool saveToFile(string fileName, Layer& layer)
     if (out.fail())
         return false;
 
-    out << hex << layer.getCount();
+    out << layer.getCount() << ' ';
     for (int i = 0; i < layer.getCount(); i++)
     {
         Grid* g = layer.get(i);
         int w = g->getWidth();
         int h = g->getHeight();
 
-        out << hex << w << h;
+        out << w << ' ' << h;
         for (int j = 0; j < w * h; j++)
         {
             int x = j % w;
             int y = j / w;
-            out << hex << getIntFromID(g->get(x, y).getID());
+            out << ' ' << getIntFromID(g->get(x, y).getID());
         }
     }
 
