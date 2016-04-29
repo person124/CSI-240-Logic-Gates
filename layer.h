@@ -31,7 +31,7 @@ class Layer
         void dequeue();
         Grid* get(int);
 		int getCount();
-		int getCurrentLayer();
+        int getCurrentLayer();
         void push(Grid*);
         void pop();
         void enqueue(Grid*);

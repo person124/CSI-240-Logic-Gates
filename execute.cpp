@@ -8,30 +8,30 @@
  *          change to fit the simulation
  *  Author: Calum M. Phillips
  */
-void execute(Layer& layer, StartingList& list, bool charge)
+void execute(Layer& layer, StartingList& list)
 {
+    int f;
     for (int i = 0; i < list.getCount(); i++)
     {
         StartingPos* pos = list.get(i);
         Component* c = &layer.get(pos->mL)->get(pos->mX, pos->mY);
-        c.setCharged(charge);
-        poke(layer, pos->mL, pos->mX, pos->mY, charge);
+        c->setCharged(true);
+        poke(layer, pos->mL, pos->mX, pos->mY, true);
     }
 }
 
 void invokeGate(Layer& layer, int l, int x, int y, bool charge, char dir)
 {
     Grid* g = layer.get(l);
-    string id = g->get(x, y).getID();
 
     bool chargeUp = g->get(x, y - 1).getCharge();
     bool chargeDown = g->get(x, y + 1).getCharge();
 
     Component* c = &g->get(x, y);
-    bool gCharge = c.getGateOutput(id, chargeUp, chargeDown);
-    if (gCharge != c.getCharge())
+    bool gCharge = getGateOutput(c->getID(), chargeUp, chargeDown);
+    if (gCharge != c->getCharge())
     {
-        c.setCharged(gCharge);
+        c->setCharged(gCharge);
         pokeLoc(layer, l, x + 1, y, gCharge, 'r');
     }
 }
@@ -70,13 +70,13 @@ void poke(Layer& layer, int l, int x, int y, bool charge)
 void pokeLoc(Layer& layer, int l, int x, int y, bool charge, char dir)
 {
     Component* c = &layer.get(l)->get(x, y);
-    if (c.getID() == "WIRE" && !wireCheck(charge, c.getCharge()))
+    if (c->getID() == "WIRE" && !wireCheck(charge, c->getCharge()))
         invokeWire(layer, l, x, y, charge);
-    else if (c.getID() == "LIGHT")
+    else if (c->getID() == "LIGHT")
         invokeLight(layer, l, x, y, charge);
-    else if (c.getID() == "NOT" && dir == 'l')
+    else if (c->getID() == "NOT" && dir == 'l')
         invokeNot(layer, l, x, y, charge);
-    else if ((dir == 'd' || dir == 'u') && isGate(c.getID()))
+    else if ((dir == 'd' || dir == 'u') && isGate(c->getID()))
         invokeGate(layer, l, x, y, charge, dir);
 }
 

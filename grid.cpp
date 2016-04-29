@@ -4,6 +4,7 @@ Grid::Grid(int w, int h)
 {
     mWidth = w;
     mHeight = h;
+    nullComp = Component("NULL");
 
     mGrid = new Component*[mWidth];
     for (int i = 0; i < mWidth; i++)
@@ -26,10 +27,10 @@ Grid::~Grid()
  *    Post: None
  *  Author: Calum M. Phillips
  */
-Component Grid::get(int x, int y)
+Component& Grid::get(int x, int y)
 {
     if (x < 0 || y < 0 || x >= mWidth || y >= mHeight)
-        return Component();
+        return nullComp;
     return mGrid[x][y];
 }
 

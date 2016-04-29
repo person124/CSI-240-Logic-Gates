@@ -10,7 +10,7 @@ StartingList::StartingList()
 StartingList::~StartingList()
 {
     Node* temp = mHead;
-    for (int i = 0; i < mCount; i++)
+    for (int i = 1; i < mCount; i++)
     {
         Node* next = temp->mNext;
         delete temp;
@@ -45,7 +45,7 @@ void StartingList::add(StartingPos pos)
     else
     {
         Node* temp = mHead;
-        for (int i = 0; i < mCount; i++)
+        for (int i = 1; i < mCount; i++)
             temp = temp->mNext;
         temp->mNext = node;
     }
@@ -63,7 +63,7 @@ StartingPos* StartingList::get(int num)
         return nullPos;
 
     Node* temp = mHead;
-    for (int i = 0; i < num; i++)
+    for (int i = 1; i <= num; i++)
         temp = temp->mNext;
 
     return temp->mData;

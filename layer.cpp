@@ -9,9 +9,9 @@ Layer::Layer()
 {
     mCount = 0;
     mHead = NULL;
-	mCurrent = 0;
-	for (int i = 0; i < 1; i++)
-		push(new Grid());
+    mCurrent = 0;
+    for (int i = 0; i < 1; i++)
+        push(new Grid());
 }
 
 Layer::~Layer()
@@ -101,13 +101,13 @@ Grid* Layer::get(int num)
     Node* temp = mHead;
     for (int i = 1; i <= num; i++)
         temp = temp->mNext;
-	
+
     return temp->mData;
 }
 
 int Layer::getCount()
 {
-	return mCount;
+    return mCount;
 }
 
 /* Purpose: Gets the systems current layer.
@@ -117,7 +117,7 @@ int Layer::getCount()
  */
 int Layer::getCurrentLayer()
 {
-	return mCurrent;
+    return mCurrent;
 }
 
 /* Purpose: Adds the specified grid to the front of the list
@@ -199,16 +199,16 @@ void Layer::setCurrentLayer(int num)
  */
 Grid* operator++(Layer& l)
 {
-	Grid* temp;
-	if (l.getCurrentLayer() + 1 >= l.getCount())
-	{
-	    temp = new Grid();
-		l.enqueue(temp);
-	}
-	else
-	    temp = l.get(l.getCurrentLayer() + 1);
-	l.setCurrentLayer(l.getCurrentLayer() + 1);
-	return temp;
+    Grid* temp;
+    if (l.getCurrentLayer() + 1 >= l.getCount())
+    {
+        temp = new Grid();
+        l.enqueue(temp);
+    }
+    else
+        temp = l.get(l.getCurrentLayer() + 1);
+    l.setCurrentLayer(l.getCurrentLayer() + 1);
+    return temp;
 }
 
 /* Purpose: Moves one down in the layers.
@@ -218,16 +218,16 @@ Grid* operator++(Layer& l)
  */
 Grid* operator--(Layer& l)
 {
-	Grid* temp;
-	if (l.getCurrentLayer() == 0)
-	{
-	    temp = new Grid();
-		l.push(temp);
-	}
-	else
-	{
-	    temp = l.get(l.getCurrentLayer() - 1);
-	    l.setCurrentLayer(l.getCurrentLayer() - 1);
-	}
-	return temp;
+    Grid* temp;
+    if (l.getCurrentLayer() == 0)
+    {
+        temp = new Grid();
+        l.push(temp);
+    }
+    else
+    {
+        temp = l.get(l.getCurrentLayer() - 1);
+        l.setCurrentLayer(l.getCurrentLayer() - 1);
+    }
+    return temp;
 }
