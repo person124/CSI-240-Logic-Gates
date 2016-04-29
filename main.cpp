@@ -20,7 +20,7 @@ int main()
         displayGrid(layer);
         displayCommands();
 
-        /* Parse input */
+        /* Get input and parse command type */
         getInput(ss);
         destination = readCommandType(ss);
 
@@ -43,12 +43,7 @@ int main()
             break;
 
         case RUN:
-            execute(layer, startingList, true);
-            utls::clear();
-            displayGrid(layer);
-            utls::pause();
-            execute(layer, startingList, false);
-
+            run(layer, startingList, ss);
             break;
 
         case RESIZE:
