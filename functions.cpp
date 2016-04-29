@@ -523,7 +523,7 @@ void run(Layer &layer, StartingList &startingList, stringstream &ss)
     if (!hasJunk(ss))
     {
         /* Execute */
-        execute(layer, startingList, true);
+        execute(layer, startingList);
 
         /* Display */
         utls::clear();
@@ -531,7 +531,7 @@ void run(Layer &layer, StartingList &startingList, stringstream &ss)
         displayMessage(MSG_EXECUTE);
 
         /* Revert */
-        execute(layer, startingList, false);
+        execute(layer, startingList);
     }
     else
     {
