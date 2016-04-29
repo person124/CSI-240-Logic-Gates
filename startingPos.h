@@ -11,23 +11,8 @@ struct StartingPos
 class StartingList
 {
     private:
-        struct Node
-        {
-            StartingPos* mData;
-            Node* mNext;
-            Node()
-            {
-                mData = NULL;
-                mNext = NULL;
-            }
-            Node(StartingPos pos)
-            {
-                mData = &pos;
-                mNext = NULL;
-            }
-        };
-        Node* mHead;
-        int mCount;
+        StartingPos* mArray;
+        int mSize;
         StartingPos* nullPos;
     public:
         StartingList();
@@ -35,11 +20,11 @@ class StartingList
         void add(int, int, int);
         void add(StartingPos);
         StartingPos* get(int);
-        int getCount();
+        int getSize();
         void remove(int, int, int);
         void remove(StartingPos);
 };
 
-bool operator!=(StartingPos*, StartingPos);
+bool operator==(StartingPos, StartingPos);
 
 #endif
