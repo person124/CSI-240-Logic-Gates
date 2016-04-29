@@ -18,7 +18,7 @@ int main()
 
         /* Parse input */
         getInput(ss);
-        destination = getCommandType(ss);
+        destination = readCommandType(ss);
 
         switch (destination)
         {
@@ -27,23 +27,23 @@ int main()
             break;
 
         case REMOVE:
-            removeComponent(layer, ss);
+            removeComponent(layer, startingList, ss);
             break;
 
         case UP:
-            layerUp(layer, ss);
+            changeLayer(layer, ss, UP);
             break;
 
         case DOWN:
-            layerDown(layer, ss);
+            changeLayer(layer, ss, DOWN);
             break;
 
         case RUN:
             execute(layer, startingList);
             break;
 
-        case SETUP:
-            setup(layer, ss);
+        case RESIZE:
+            resize(layer, startingList, ss);
             break;
 
         case QUIT:
