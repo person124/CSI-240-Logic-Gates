@@ -19,7 +19,8 @@
 using namespace std;
 
 
-const int GRID_MAX = 255;
+const int    GRID_MAX  = 255;
+const string DATA_PATH = "data.txt";
 
 
 /* COMMAND PARSING SYSTEM

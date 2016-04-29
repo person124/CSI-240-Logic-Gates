@@ -522,6 +522,9 @@ void run(Layer &layer, StartingList &startingList, stringstream &ss)
     /* If no junk data */
     if (!hasJunk(ss))
     {
+        /* Save file */
+        saveToFile(DATA_PATH, layer);
+
         /* Execute */
         execute(layer, startingList);
 
@@ -530,8 +533,8 @@ void run(Layer &layer, StartingList &startingList, stringstream &ss)
         displayGrid(layer);
         displayMessage(MSG_EXECUTE);
 
-        /* Revert */
-        execute(layer, startingList);
+        /* Revert by loading file */
+        loadFromFile(DATA_PATH, layer);
     }
     else
     {
