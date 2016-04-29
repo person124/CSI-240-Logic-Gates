@@ -36,12 +36,12 @@ Component& Grid::get(int x, int y)
 
 int Grid::getWidth()
 {
-	return mWidth;
+    return mWidth;
 }
 
 int Grid::getHeight()
 {
-	return mHeight;
+    return mHeight;
 }
 
 /* Purpose: Clears the component at the specified location
@@ -114,7 +114,7 @@ void Grid::resize(int newW, int newH)
                 for (int j = 0; j < newH; j++)
                     temp[j] = mGrid[i][j];
                 for (int j = newH; j < mHeight; j++)
-                    delete [] mGrid[i];
+                    delete &mGrid[i][j];
                 mGrid[i] = temp;
             }
         }
