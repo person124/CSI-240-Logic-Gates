@@ -70,8 +70,12 @@ void Grid::resize(int newW, int newH)
             Component** temp = new Component*[newW];
             for (int i = 0; i < mWidth; i++)
                 temp[i] = mGrid[i];
-            for (int i = 0; i < newW - mWidth; i++)
-                temp[i] = new Component[newH];
+            for (int i = mWidth; i < newW; i++)
+            {
+                temp[i] = new Component[mHeight];
+                for (int j = 0; j < mHeight; j++)
+                    temp[i][j] = Component();
+            }
             mWidth = newW;
             mGrid = temp;
         }
@@ -80,7 +84,7 @@ void Grid::resize(int newW, int newH)
             Component** temp = new Component*[newW];
             for (int i = 0; i < newW; i++)
                 temp[i] = mGrid[i];
-            for (int i = newW + 1; i < mWidth; i++)
+            for (int i = newW; i < mWidth; i++)
                 delete[] mGrid[i];
             mWidth = newW;
             mGrid = temp;
@@ -91,22 +95,24 @@ void Grid::resize(int newW, int newH)
     {
         if (mHeight < newH)
         {
-            for (int i = 0; i < mHeight; i++)
+            for (int i = 0; i < mWidth; i++)
             {
                 Component* temp = new Component[newH];
                 for (int j = 0; j < mHeight; j++)
                     temp[j] = mGrid[i][j];
+                for (int j = mHeight; j < newH; j++)
+                    temp[j] = Component();
                 mGrid[i] = temp;
             }
         }
         else
         {
-            for (int i = 0; i < mHeight; i++)
+            for (int i = 0; i < mWidth; i++)
             {
                 Component* temp = new Component[newH];
                 for (int j = 0; j < newH; j++)
                     temp[j] = mGrid[i][j];
-                for (int j = newH + 1; j < mHeight; j++)
+                for (int j = newH; j < mHeight; j++)
                     delete [] mGrid[i];
                 mGrid[i] = temp;
             }
