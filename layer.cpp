@@ -10,7 +10,7 @@ Layer::Layer()
     mCount = 0;
     mHead = NULL;
 	mCurrent = 0;
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 1; i++)
 		push(new Grid());
 }
 
@@ -99,11 +99,9 @@ Grid* Layer::get(int num)
         return NULL;
 
     Node* temp = mHead;
-    for (int i = 1; i < num; i++)
+    for (int i = 1; i <= num; i++)
         temp = temp->mNext;
 	
-	mCurrent = num;
-
     return temp->mData;
 }
 
@@ -191,7 +189,7 @@ void Layer::remove(int num)
 
 void Layer::setCurrentLayer(int num)
 {
-    mCount = num;
+    mCurrent = num;
 }
 
 /* Purpose: Moves one up in the layers.
@@ -201,12 +199,14 @@ void Layer::setCurrentLayer(int num)
  */
 Grid* operator++(Layer& l)
 {
-	Grid* temp = l.get(l.getCurrentLayer() + 1);
-	if (temp == NULL)
+	Grid* temp;
+	if (l.getCurrentLayer() + 1 >= l.getCount())
 	{
-		l.enqueue(new Grid());
-		temp = l.get(l.getCount() - 1);
+	    temp = new Grid();
+		l.enqueue(temp);
 	}
+	else
+	    temp = l.get(l.getCurrentLayer() + 1);
 	l.setCurrentLayer(l.getCurrentLayer() + 1);
 	return temp;
 }
@@ -218,12 +218,16 @@ Grid* operator++(Layer& l)
  */
 Grid* operator--(Layer& l)
 {
-	Grid* temp = l.get(l.getCurrentLayer() - 1);
-	if (temp == NULL)
+	Grid* temp;
+	if (l.getCurrentLayer() == 0)
 	{
-		l.push(new Grid());
-		temp = l.get(0);
+	    temp = new Grid();
+		l.push(temp);
 	}
-	if (l.getCurrentLayer() > 0) l.setCurrentLayer(l.getCurrentLayer() - 1);
+	else
+	{
+	    temp = l.get(l.getCurrentLayer() - 1);
+	    l.setCurrentLayer(l.getCurrentLayer() - 1);
+	}
 	return temp;
 }
