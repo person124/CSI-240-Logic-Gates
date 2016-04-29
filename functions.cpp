@@ -20,72 +20,31 @@ void addComponent(Layer &layer, StartingList &startingList, stringstream &ss)
 
     currentLayer = layer.getCurrentLayer();
 
-    type = getComponentType(ss);
+    /* Get command data */
+    type = readComponentType(ss);
+    xPos = readNumber(ss);
+    yPos = readNumber(ss);
 
-    if (type == EMPTY)
+    /* If no junk data */
+    if (!hasJunk(ss))
     {
-        return;
-    }
-    data.clear();
+        /* If type and position are valid */
+        if (isPosition(layer, xPos, yPos) && type != EMPTY)
+        {
+            /* Add the component */
+            component = Component(COMPONENT_NAME[static_cast<int>(type)]);
+            layer.get(currentLayer)->set(xPos, yPos, component);
 
-    /* Read x position */
-    ss >> data;
-    if (utls::isDigit(data))
-    {
-        xPos = stoi(data);
-        xSize = layer.get(currentLayer)->getWidth();
-
-        /* Validate x position */
-        if (xPos < 0 || xPos > xSize)
+            /* Special case for adding power component */
+            if (type == POWER)
+            {
+                startingList.add(currentLayer, xPos, yPos);
+            }
+        }
+        else
         {
             displayMessage(MSG_INV_ADD);
-            return;
         }
-    }
-    else
-    {
-        displayMessage(MSG_INV_ADD);
-        return;
-    }
-    data.clear();
-
-    /* Read y position */
-    ss >> data;
-    if (utls::isDigit(data))
-    {
-        yPos = stoi(data);
-        ySize = layer.get(currentLayer)->getHeight();
-
-        /* Validate y position */
-        if (yPos < 0 || yPos > ySize)
-        {
-            displayMessage(MSG_INV_ADD);
-            return;
-        }
-    }
-    else
-    {
-        displayMessage(MSG_INV_ADD);
-        return;
-    }
-    data.clear();
-
-    /* Check for junk */
-    ss >> data;
-    if (!data.empty())
-    {
-        displayMessage(MSG_INV_ADD);
-        return;
-    }
-    data.clear();
-
-    component = Component(COMPONENT_NAME[static_cast<int>(type)]);
-
-    layer.get(currentLayer)->set(xPos, yPos, component);
-
-    if (type == POWER)
-    {
-        startingList.add(currentLayer, xPos, yPos);
     }
 }
 
@@ -97,11 +56,10 @@ void addComponent(Layer &layer, StartingList &startingList, stringstream &ss)
  ******************************************************************************/
 void displayGrid(Layer &layer)
 {
-    Component     tmp;
-
     int           currentLayer = 0;
     int           height       = 0;
     string        id           = "";
+    Component     tmp;
     ComponentType type         = EMPTY;
     int           width        = 0;
 
@@ -113,14 +71,10 @@ void displayGrid(Layer &layer)
     {
         for (int j = 0; j < width; j++)
         {
-
-            tmp = layer.get(currentLayer)->get(i, j);
-
-            id = tmp.getID();
-
-            type = getComponentType(id);
+            tmp  = layer.get(currentLayer)->get(j, i);
+            id   = tmp.getID();
+            type = readComponentType(id);
     
-            /* */
             if (tmp.getCharge())
             {
                 cout << COMPONENT_ON[static_cast<int>(type)];
@@ -130,12 +84,10 @@ void displayGrid(Layer &layer)
                 cout << COMPONENT_OFF[static_cast<int>(type)];
             }
         }
-        cout << endl;
+        cout << endl << endl;
 
         tmp = Component();
         id.clear();
-
-        cout << endl;
     }
     cout << endl;
 }
@@ -207,12 +159,13 @@ void getInput(stringstream &ss)
  *    Post:  Returns command type (ENTRY for invalid input)
  *  Author:  Matthew James Harrison
  ******************************************************************************/
-CommandType getCommandType(stringstream &ss)
+CommandType readCommandType(stringstream &ss)
 {
     string      data = "";
     CommandType type  = NONE;
 
     ss >> data;
+
     for (int i = 0; i < COMMAND_SIZE; i++)
     {
         if (COMMAND_NAME[i] == data)
@@ -220,7 +173,6 @@ CommandType getCommandType(stringstream &ss)
             type = static_cast<CommandType>(i);
         }
     }
-    data.clear();
 
     return type;
 }
@@ -231,7 +183,7 @@ CommandType getCommandType(stringstream &ss)
  *    Post:  Returns component type (EMPTY for invalid input)
  *  Author:  Matthew James Harrison
  ******************************************************************************/
-ComponentType getComponentType(string id)
+ComponentType readComponentType(string id)
 {
     ComponentType type = EMPTY;
 
@@ -252,7 +204,7 @@ ComponentType getComponentType(string id)
  *    Post:  Returns component type (EMPTY for invalid input)
  *  Author:  Matthew James Harrison
  ******************************************************************************/
-ComponentType getComponentType(stringstream &ss)
+ComponentType readComponentType(stringstream &ss)
 {
     string        data = "";
     ComponentType type = EMPTY;
@@ -271,102 +223,47 @@ ComponentType getComponentType(stringstream &ss)
 }
 
 
-/* Purpose:  To move the user up by a given number of layers
- *     Pre:  Current layer exists,
- *           stringstream with move amount
- *    Post:  Moves user up by a given number of layers
- *  Author:  Matthew James Harrison
- ******************************************************************************/
-void layerUp(Layer &layer, stringstream &ss)
-{
-    string data = "";
-    int    amount = 0;
-
-    ss >> data;
-
-    if (data.empty())
-    {
-        amount = 1;
-    }
-    else if (utls::isDigit(data))
-    {
-        amount = stoi(data);
-
-        if (amount < 1)
-        {
-            displayMessage(MSG_INV_UP);
-            return;
-        }
-    }
-    else
-    {
-        displayMessage(MSG_INV_UP);
-        return;
-    }
-    data.clear();
-
-    /* Check for junk */
-    ss >> data;
-    if (!data.empty())
-    {
-        displayMessage(MSG_INV_UP);
-        return;
-    }
-    data.clear();
-
-    for (int i = 0; i < amount; i++)
-    {
-        ++layer;
-    }
-}
-
-
 /* Purpose:  To move the user up down a given number of layers
  *     Pre:  Current layer exists,
  *           stringstream with move amount
  *    Post:  Moves user down by a given number of layers
  *  Author:  Matthew James Harrison
  ******************************************************************************/
-void layerDown(Layer &layer, stringstream &ss)
+void changeLayer(Layer &layer, stringstream &ss, CommandType direction)
 {
     string data = "";
     int    amount = 0;
 
-    /* Read amount */
-    ss >> data;
-    if (data.empty())
-    {
-        amount = 1;
-    }
-    else if (utls::isDigit(data))
-    {
-        amount = stoi(data);
+    /* Read command data */
+    amount = readNumber(ss);
 
-        if (amount < 1)
+    /* If type and position are valid */
+    if (!hasJunk(ss))
+    {
+        /* If not negative input */
+        if (amount > 0)
         {
-            displayMessage(MSG_INV_UP);
-            return;
+            /* Change given amount of layers */
+            for (int i = 0; i < amount; i++)
+            {
+                if (direction == UP)
+                {
+                    ++layer;
+                }
+                else if (direction == DOWN)
+                {
+                    --layer;
+                }
+            }
+        }
+        else
+        {
+            displayMessage(MSG_INV_LAYER);
         }
     }
     else
     {
-        displayMessage(MSG_INV_UP);
-        return;
-    }
-    data.clear();
-
-    /* Check for junk */
-    ss >> data;
-    if (!data.empty())
-    {
-        displayMessage(MSG_INV_UP);
-        return;
-    }
-    data.clear();
-
-    for (int i = 0; i < amount; i++)
-    {
-        --layer;
+        displayMessage(MSG_INV_LAYER);
     }
 }
 
@@ -377,8 +274,11 @@ void layerDown(Layer &layer, stringstream &ss)
  *    Post:  Removes component at given position
  *  Author:  Matthew James Harrison
  ******************************************************************************/
-void removeComponent(Layer &layer, stringstream &ss)
+void removeComponent(Layer &layer, StartingList &startingList, stringstream &ss)
 {
+    Component tmp;
+    string    id = "";
+
     int    currentLayer = 0;
     string data         = "";
     int    xPos         = -1;
@@ -388,58 +288,35 @@ void removeComponent(Layer &layer, stringstream &ss)
 
     currentLayer = layer.getCurrentLayer();
 
-    /* Read x position */
-    ss >> data;
-    if (utls::isDigit(data))
-    {
-        xPos = stoi(data);
-        xSize = layer.get(currentLayer)->getWidth();
+    /* Get command data */
+    xPos = readNumber(ss);
+    yPos = readNumber(ss);
 
-        /* Validate x position */
-        if (xPos < 0 || xPos > xSize)
+    /* If no junk data */
+    if (!hasJunk(ss))
+    {
+        /* If type and position are valid */
+        if (isPosition(layer, xPos, yPos))
+        {
+            tmp = layer.get(currentLayer)->get(xPos, yPos);
+            id = tmp.getID();
+
+            layer.get(currentLayer)->remove(xPos, yPos);
+
+            if (id == COMPONENT_NAME[static_cast<int>(POWER)])
+            {
+                startingList.remove(currentLayer, xPos, yPos);
+            }
+        }
+        else
         {
             displayMessage(MSG_INV_REMOVE);
-            return;
         }
     }
     else
     {
         displayMessage(MSG_INV_REMOVE);
-        return;
     }
-    data.clear();
-
-    /* Read y position */
-    ss >> data;
-    if (utls::isDigit(data))
-    {
-        yPos  = stoi(data);
-        ySize = layer.get(currentLayer)->getHeight();
-
-        /* Validate y position */
-        if (yPos < 0 || yPos > ySize)
-        {
-            displayMessage(MSG_INV_REMOVE);
-            return;
-        }
-    }
-    else
-    {
-        displayMessage(MSG_INV_REMOVE);
-        return;
-    }
-    data.clear();
-
-    /* Check for junk */
-    ss >> data;
-    if (!data.empty())
-    {
-        displayMessage(MSG_INV_REMOVE);
-        return;
-    }
-    data.clear();
-
-    layer.get(currentLayer)->remove(xPos, yPos);
 }
 
 
@@ -449,50 +326,105 @@ void removeComponent(Layer &layer, stringstream &ss)
  *    Post:  Creates new system with given width and height
  *  Author:  Matthew James Harrison
  ******************************************************************************/
-void setup(Layer &layer, stringstream &ss)
+void resize(Layer &layer, StartingList &startingList, stringstream &ss)
 {
     int    currentLayer = 0;
     string data         = "";
-    int    xSize        = 0;
-    int    ySize        = 0;
+    int    xSizeNew     = 0;
+    int    xSizeOld     = 0;
+    int    ySizeNew     = 0;
+    int    ySizeOld     = 0;
 
     currentLayer = layer.getCurrentLayer();
+    xSizeOld     = layer.get(currentLayer)->getWidth();
+    ySizeOld     = layer.get(currentLayer)->getHeight();
 
-    /* Read x size */
-    ss >> data;
-    if (utls::isDigit(data))
+    /* Read command data */
+    xSizeNew = readNumber(ss);
+    ySizeNew = readNumber(ss);
+
+    /* If no junk data */
+    if (!hasJunk(ss))
     {
-        xSize = stoi(data);
+        /* If valid size */
+        if (xSizeNew > 0 && ySizeNew > 0)
+        {
+            for (int i = 0; i < startingList.getCount(); i++)
+            {
+                StartingPos* pos = startingList.get(i);
+
+                if (pos->mL == currentLayer)
+                {
+                    if (pos->mX >= xSizeNew || pos->mY >= ySizeNew)
+                    {
+                        startingList.remove(currentLayer, pos->mX, pos->mY);
+                    }
+                }
+            }
+
+            layer.get(currentLayer)->resize(xSizeNew, ySizeNew);
+        }
+        else
+        {
+            displayMessage(MSG_INV_RESIZE);
+        }
     }
     else
     {
-        displayMessage(MSG_INV_SETUP);
-        return;
+        displayMessage(MSG_INV_RESIZE);
     }
-    data.clear();
+}
 
-    /* Read y size */
-    ss >> data;
-    if (utls::isDigit(data))
-    {
-        ySize = stoi(data);
-    }
-    else
-    {
-        displayMessage(MSG_INV_SETUP);
-        return;
-    }
-    data.clear();
+bool hasJunk(stringstream &ss)
+{
+    string data = "";
+    bool   isJunk = false;
 
-    /* Check for junk */
     ss >> data;
+
     if (!data.empty())
     {
-        displayMessage(MSG_INV_SETUP);
-        return;
+        isJunk = true;
     }
-    data.clear();
 
-    // Actually set the width and height
-    layer.get(currentLayer)->resize(xSize, ySize);
+    return isJunk;
+}
+
+int readNumber(stringstream&ss)
+{
+    string data   = "";
+    int    number = -1;
+
+    ss >> data;
+
+    if (utls::isDigit(data))
+    {
+        number = stoi(data);
+    }
+
+    return number;
+}
+
+bool isPosition(Layer &layer, const int xPos, const int yPos)
+{
+    bool isPosition = true;
+
+    int currentLayer = 0;
+    int xWidth       = 0;
+    int yHeight      = 0;
+
+    currentLayer = layer.getCurrentLayer();
+    xWidth       = layer.get(currentLayer)->getWidth();
+    yHeight      = layer.get(currentLayer)->getHeight();
+
+    if (xPos < 0 || xPos > xWidth)
+    {
+        isPosition = false;
+    }
+    else if (yPos < 0 || yPos > yHeight)
+    {
+        isPosition = false;
+    }
+
+    return isPosition;
 }
