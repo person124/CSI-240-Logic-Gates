@@ -17,34 +17,33 @@ int getIntFromID(string name)
     return 0;
 }
 
-Layer loadFromFile(string fileName)
+bool loadFromFile(string fileName, Layer& layer)
 {
-    Layer layer;
-
     ifstream in(fileName.c_str());
     if (!in.fail())
+        return false;
+
+    int count = in.get();
+    for (int i = 0; i < count; i++)
     {
-        int count = in.get();
-        for (int i = 0; i < count; i++)
+        Grid* g;
+        if (i != 0)
+            layer.add(i, new Grid());
+        g = layer.get(i);
+
+        int w = in.get(), h = in.get();
+        g->resize(w, h);
+
+        for (int j = 0; j < w * h; j++)
         {
-            Grid* g;
-            if (i != 0)
-                layer.add(i, new Grid());
-            g = layer.get(i);
-
-            int w = in.get(), h = in.get();
-            g->resize(w, h);
-
-            for (int j = 0; j < w * h; j++)
-            {
-                int x = j % w;
-                int y = j / w;
-                g->set(x, y, Component(getIDFromInt(in.get())));
-            }
+            int x = j % w;
+            int y = j / w;
+            g->set(x, y, Component(getIDFromInt(in.get())));
         }
     }
+
     in.close();
-    return layer;
+    return true;
 }
 
 bool saveToFile(string fileName, Layer& layer)

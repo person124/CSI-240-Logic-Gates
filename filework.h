@@ -12,7 +12,7 @@ using namespace std;
 
 string getIDFromInt(int);
 int getIntFromID(string);
-Layer loadFromFile(string);
+bool loadFromFile(string, Layer&);
 bool saveToFile(string, Layer&);
 
 #endif
