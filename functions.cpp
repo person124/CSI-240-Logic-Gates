@@ -483,7 +483,7 @@ void resize(Layer &layer, StartingList &startingList, stringstream &ss)
         if (xSizeNew > 0 && ySizeNew > 0
             && xSizeNew <= GRID_MAX && ySizeNew <= GRID_MAX)
         {
-            for (int i = 0; i < startingList.getCount(); i++)
+            for (int i = 0; i < startingList.getSize(); i++)
             {
                 StartingPos* pos = startingList.get(i);
 
@@ -531,7 +531,7 @@ void run(Layer &layer, StartingList &startingList, stringstream &ss)
         displayMessage(MSG_EXECUTE);
 
         /* Revert */
-        execute(layer, startingList);
+        //execute(layer, startingList, false);
     }
     else
     {

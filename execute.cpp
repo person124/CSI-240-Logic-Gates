@@ -1,17 +1,15 @@
 #include "execute.h"
 
 /* Purpose: To start the execution of the simulation of the logic gates.
- *     Pre: layer is the linked-list of the different layers, list is
- *          the linked-list of all of the start points, and charge
- *          is the charge to set the starts too.
+ *     Pre: layer is the linked-list of the different layers, and list is
+ *          the linked-list of all of the start points.
  *    Post: The charge values of all of the wires and gates and lights
  *          change to fit the simulation
  *  Author: Calum M. Phillips
  */
 void execute(Layer& layer, StartingList& list)
 {
-    int f;
-    for (int i = 0; i < list.getCount(); i++)
+    for (int i = 0; i < list.getSize(); i++)
     {
         StartingPos* pos = list.get(i);
         Component* c = &layer.get(pos->mL)->get(pos->mX, pos->mY);

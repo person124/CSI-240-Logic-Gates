@@ -2,20 +2,18 @@
 
 StartingList::StartingList()
 {
-    mCount = 0;
-    mHead = NULL;
+    mSize = 0;
+    mArray = NULL;
     nullPos = new StartingPos();
+    nullPos->mL = 0;
+    nullPos->mX = 0;
+    nullPos->mY = 0;
 }
 
 StartingList::~StartingList()
 {
-    Node* temp = mHead;
-    for (int i = 1; i < mCount; i++)
-    {
-        Node* next = temp->mNext;
-        delete temp;
-        temp = next;
-    }
+    delete [] mArray;
+    delete nullPos;
 }
 
 /* Purpose: Creates and adds a new starting pos at layer, x, and y.
@@ -39,17 +37,12 @@ void StartingList::add(int l, int x, int y)
  */
 void StartingList::add(StartingPos pos)
 {
-    Node* node = new Node(pos);
-    if (mHead == NULL)
-        mHead = node;
-    else
-    {
-        Node* temp = mHead;
-        for (int i = 1; i < mCount; i++)
-            temp = temp->mNext;
-        temp->mNext = node;
-    }
-    mCount++;
+    StartingPos* newList = new StartingPos[mSize + 1];
+    for (int i = 0; i < mSize; i++)
+        newList[i] = mArray[i];
+    newList[mSize] = pos;
+    mArray = newList;
+    mSize++;
 }
 
 /* Purpose: Returns the starting pos at the specified index, if none found, will return NULL
@@ -59,19 +52,15 @@ void StartingList::add(StartingPos pos)
  */
 StartingPos* StartingList::get(int num)
 {
-    if (num < 0 || num >= mCount)
+    if (num < 0 || num >= mSize)
         return nullPos;
 
-    Node* temp = mHead;
-    for (int i = 1; i <= num; i++)
-        temp = temp->mNext;
-
-    return temp->mData;
+    return &mArray[num];
 }
 
-int StartingList::getCount()
+int StartingList::getSize()
 {
-    return mCount;
+    return mSize;
 }
 
 /* Purpose: Removes the specified starting pos
@@ -95,27 +84,39 @@ void StartingList::remove(int l, int x, int y)
  */
 void StartingList::remove(StartingPos pos)
 {
-    if (mHead == NULL)
+    if (mSize == 0)
         return;
+    if (mSize == 1)
+        delete [] mArray;
 
-    Node* temp = mHead;
-    Node* pre = NULL;
-    while (temp != NULL && temp->mData != pos)
+    int place = -1;
+    for (int i = 0; i < mSize; i++)
     {
-        pre = temp;
-        temp = temp->mNext;
+        if (mArray[i] == pos)
+        {
+            place = i;
+            break;
+        }
     }
-    if (temp == NULL)
+
+    if (place == -1)
         return;
 
-    pre->mNext = temp->mNext;
-    temp->mNext = NULL;
-    delete temp;
+    StartingPos* newList = new StartingPos[mSize - 1];
+    int j = 0;
+    for (int i = 0; i < mSize; i++)
+    {
+        if (i == place)
+            continue;
+        newList[j] = mArray[i];
+        j++;
+    }
+    delete [] mArray;
 
-    mCount--;
+    mSize--;
 }
 
-bool operator!=(StartingPos* p1, StartingPos p2)
+bool operator==(StartingPos p1, StartingPos p2)
 {
-    return p1->mL != p2.mL || p1->mX != p2.mX || p1->mY != p2.mY;
+    return p1.mL == p2.mL || p1.mX == p2.mX || p1.mY == p2.mY;
 }
