@@ -1,19 +1,20 @@
 #include "execute.h"
 
 /* Purpose: To start the execution of the simulation of the logic gates.
- *     Pre: layer is the linked-list of the different layers, and list is
- *          the linked-list of all of the start points.
+ *     Pre: layer is the linked-list of the different layers, list is
+ *          the linked-list of all of the start points, and charge
+ *          is the charge to set the starts too.
  *    Post: The charge values of all of the wires and gates and lights
  *          change to fit the simulation
  *  Author: Calum M. Phillips
  */
-void execute(Layer& layer, StartingList& list)
+void execute(Layer& layer, StartingList& list, bool charge)
 {
     for (int i = 0; i < list.getCount(); i++)
     {
         StartingPos* pos = list.get(i);
         Component c = layer.get(pos->mL)->get(pos->mX, pos->mY);
-        invokeStart(layer, pos, c, true);
+        invokeStart(layer, pos, c, charge);
     }
 }
 
@@ -76,9 +77,7 @@ void poke(Layer& layer, int l, int x, int y, bool charge)
 void pokeLoc(Layer& layer, int l, int x, int y, bool charge, char dir)
 {
     Component c = layer.get(l)->get(x, y);
-    if (c.getID() == "NULL" || c.getID() == "POWER")
-        return;
-    else if (c.getID() == "WIRE" && !wireCheck(charge, c.getCharge()))
+    if (c.getID() == "WIRE" && !wireCheck(charge, c.getCharge()))
         invokeWire(layer, l, x, y, charge);
     else if (c.getID() == "LIGHT")
         invokeLight(layer, l, x, y, charge);

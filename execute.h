@@ -7,7 +7,7 @@
 #include "layer.h"
 #include "startingPos.h"
 
-void execute(Layer&, StartingList&);
+void execute(Layer&, StartingList&, bool);
 void invokeGate(Layer&, int, int, int, bool, char);
 void invokeLight(Layer&, int, int, int, bool);
 void invokeNot(Layer&, int, int, int, bool);
