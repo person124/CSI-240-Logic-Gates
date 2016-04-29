@@ -50,6 +50,18 @@ int main()
             resize(layer, startingList, ss);
             break;
 
+        case CLEAR:
+            clear(layer, startingList, ss);
+            break;
+
+        case SAVE:
+            save(layer, ss);
+            break;
+
+        case LOAD:
+            load(layer, ss);
+            break;
+
         case QUIT:
             displayMessage(MSG_SHUTDOWN);
             break;

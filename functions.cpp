@@ -8,15 +8,10 @@
  ******************************************************************************/
 void addComponent(Layer &layer, StartingList &startingList, stringstream &ss)
 {
-    Component     component;
-    int           currentLayer = 0;
     string        data         = "";
-    Component     tmp;
     ComponentType type         = EMPTY;
     int           xPos         = -1;
     int           yPos         = -1;
-
-    currentLayer = layer.getCurrentLayer();
 
     /* Get command data */
     type = readComponentType(ss);
@@ -29,28 +24,47 @@ void addComponent(Layer &layer, StartingList &startingList, stringstream &ss)
         /* If type and position are valid */
         if (isPosition(layer, xPos, yPos) && type != EMPTY)
         {
-            tmp = layer.get(currentLayer)->get(xPos, yPos);
-
-            /* If the target position has a power component */
-            if (tmp.getID() == COMPONENT_NAME[static_cast<int>(POWER)])
-            {
-                startingList.remove(currentLayer, xPos, yPos);
-            }
-
-            /* Add the component */
-            component = Component(COMPONENT_NAME[static_cast<int>(type)]);
-            layer.get(currentLayer)->set(xPos, yPos, component);
-
-            /* If adding a power component */
-            if (type == POWER)
-            {
-                startingList.add(currentLayer, xPos, yPos);
-            }
+            addComponent(layer, startingList, type, xPos, yPos);
         }
         else
         {
             displayMessage(MSG_INV_ADD);
         }
+    }
+}
+
+
+/* Purpose:  To add a component of given type at given x and y position
+ *     Pre:  Current layer exists,
+ *           List of starting position,
+ *           Component type
+ *           Integer x and y positions
+ *    Post:  Adds component of given type at given position
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
+void addComponent(Layer &layer, StartingList &startingList, const ComponentType type, const int xPos, const int yPos)
+{
+    Component component;
+    int       currentLayer = 0;
+    Component tmp;
+
+    currentLayer = layer.getCurrentLayer();
+    tmp          = layer.get(currentLayer)->get(xPos, yPos);
+
+    /* If the target position has a power component */
+    if (tmp.getID() == COMPONENT_NAME[static_cast<int>(POWER)])
+    {
+        startingList.remove(currentLayer, xPos, yPos);
+    }
+
+    /* Add the component */
+    component = Component(COMPONENT_NAME[static_cast<int>(type)]);
+    layer.get(currentLayer)->set(xPos, yPos, component);
+
+    /* If adding a power component */
+    if (type == POWER)
+    {
+        startingList.add(currentLayer, xPos, yPos);
     }
 }
 
@@ -96,6 +110,43 @@ void changeLayer(Layer &layer, stringstream &ss, CommandType direction)
     else
     {
         displayMessage(MSG_INV_LAYER);
+    }
+}
+
+
+/* Purpose:  To clear all components from the current layer
+ *     Pre:  Current layer exists
+ *           List of starting positions
+ *           Stringstream from user input
+ *    Post:  Displays grid on the screen
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
+void clear(Layer &layer, StartingList &startingList, stringstream &ss)
+{
+    int currentLayer = 0;
+    int height = 0;
+    int width = 0;
+
+    currentLayer = layer.getCurrentLayer();
+    height       = layer.get(currentLayer)->getHeight();
+    width        = layer.get(currentLayer)->getWidth();
+
+    /* If no junk data */
+    if (!hasJunk(ss))
+    {
+        /* Traverse each row */
+        for (int i = 0; i < height; i++)
+        {
+            /* Traverse each column of current row */
+            for (int j = 0; j < width; j++)
+            {
+                removeComponent(layer, startingList, j, i);
+            }
+        }
+    }
+    else
+    {
+        displayMessage(MSG_INV_COMMAND);
     }
 }
 
@@ -292,10 +343,10 @@ bool hasJunk(stringstream &ss)
  ******************************************************************************/
 bool isPosition(Layer &layer, const int xPos, const int yPos)
 {
-    int currentLayer = 0;
-    bool isPosition  = true;
-    int xWidth       = 0;
-    int yHeight      = 0;
+    int  currentLayer = 0;
+    bool isPosition   = true;
+    int  xWidth       = 0;
+    int  yHeight      = 0;
 
     currentLayer = layer.getCurrentLayer();
     xWidth       = layer.get(currentLayer)->getWidth();
@@ -311,6 +362,37 @@ bool isPosition(Layer &layer, const int xPos, const int yPos)
     }
 
     return isPosition;
+}
+
+
+/* Purpose:  To load all layers from a file at given path
+ *     Pre:  Current layer exists,
+ *           Stringstream containing file path
+ *    Post:  All layers loaded from file
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
+void load(Layer &layer, stringstream &ss)
+{
+    string path = "";
+
+    ss >> path;
+
+    if (!path.empty())
+    {
+        if (!hasJunk(ss))
+        {
+            loadFromFile(path, layer);
+            displayMessage(MSG_LOAD);
+        }
+        else
+        {
+            displayMessage(MSG_INV_LOAD);
+        }
+    }
+    else
+    {
+        displayMessage(MSG_INV_LOAD);
+    }
 }
 
 
@@ -412,14 +494,9 @@ int readNumber(stringstream&ss)
  ******************************************************************************/
 void removeComponent(Layer &layer, StartingList &startingList, stringstream &ss)
 {
-    int       currentLayer = 0;
     string    data         = "";
-    string    id           = "";
-    Component tmp;
     int       xPos         = -1;
     int       yPos         = -1;
-
-    currentLayer = layer.getCurrentLayer();
 
     /* Get command data */
     xPos = readNumber(ss);
@@ -431,15 +508,7 @@ void removeComponent(Layer &layer, StartingList &startingList, stringstream &ss)
         /* If type and position are valid */
         if (isPosition(layer, xPos, yPos))
         {
-            tmp = layer.get(currentLayer)->get(xPos, yPos);
-            id = tmp.getID();
-
-            layer.get(currentLayer)->remove(xPos, yPos);
-
-            if (id == COMPONENT_NAME[static_cast<int>(POWER)])
-            {
-                startingList.remove(currentLayer, xPos, yPos);
-            }
+            removeComponent(layer, startingList, xPos, yPos);
         }
         else
         {
@@ -449,6 +518,32 @@ void removeComponent(Layer &layer, StartingList &startingList, stringstream &ss)
     else
     {
         displayMessage(MSG_INV_REMOVE);
+    }
+}
+
+
+/* Purpose:  To remove a component from a given x and y position
+ *     Pre:  Current layer exists,
+ *           Starting list,
+ *           Integer x and y coordinates
+ *    Post:  Removes component at given position
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
+void removeComponent(Layer &layer, StartingList &startingList, const int xPos, const int yPos)
+{
+    int       currentLayer = 0;
+    string    id           = "";
+    Component tmp;
+
+    currentLayer = layer.getCurrentLayer();
+    tmp          = layer.get(currentLayer)->get(xPos, yPos);
+    id           = tmp.getID();
+
+    layer.get(currentLayer)->remove(xPos, yPos);
+
+    if (id == COMPONENT_NAME[static_cast<int>(POWER)])
+    {
+        startingList.remove(currentLayer, xPos, yPos);
     }
 }
 
@@ -539,5 +634,36 @@ void run(Layer &layer, StartingList &startingList, stringstream &ss)
     else
     {
         displayMessage(MSG_INV_COMMAND);
+    }
+}
+
+
+/* Purpose:  To save all layers to a file at given path
+ *     Pre:  Current layer exists,
+ *           Stringstream containing file path
+ *    Post:  All layers saved to file
+ *  Author:  Matthew James Harrison
+ ******************************************************************************/
+void save(Layer &layer, stringstream &ss)
+{
+    string path = "";
+
+    ss >> path;
+
+    if (!path.empty())
+    {
+        if (!hasJunk(ss))
+        {
+            saveToFile(path, layer);
+            displayMessage(MSG_SAVE);
+        }
+        else
+        {
+            displayMessage(MSG_INV_SAVE);
+        }
+    }
+    else
+    {
+        displayMessage(MSG_INV_SAVE);
     }
 }
