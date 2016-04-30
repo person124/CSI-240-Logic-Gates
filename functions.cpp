@@ -557,15 +557,10 @@ void removeComponent(Layer &layer, StartingList &startingList, const int xPos, c
 void resize(Layer &layer, StartingList &startingList, stringstream &ss)
 {
     int    currentLayer = 0;
-    string data         = "";
     int    xSizeNew     = 0;
-    int    xSizeOld     = 0;
     int    ySizeNew     = 0;
-    int    ySizeOld     = 0;
 
     currentLayer = layer.getCurrentLayer();
-    xSizeOld     = layer.get(currentLayer)->getWidth();
-    ySizeOld     = layer.get(currentLayer)->getHeight();
 
     /* Read command data */
     xSizeNew = readNumber(ss);
