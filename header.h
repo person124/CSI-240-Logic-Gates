@@ -179,7 +179,7 @@ void displayMessage(MESSAGE_TYPE code);
 void getInput(stringstream &ss);
 bool hasJunk(stringstream &ss);
 bool isPosition(Layer &layer, const int x, const int y);
-void load(Layer &layer, stringstream &ss);
+void load(Layer &layer, StartingList &startinglist, stringstream &ss);
 CommandType readCommandType(stringstream &ss);
 ComponentType readComponentType(string id);
 ComponentType readComponentType(stringstream &ss);

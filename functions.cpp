@@ -371,7 +371,7 @@ bool isPosition(Layer &layer, const int xPos, const int yPos)
  *    Post:  All layers loaded from file
  *  Author:  Matthew James Harrison
  ******************************************************************************/
-void load(Layer &layer, stringstream &ss)
+void load(Layer &layer, StartingList &startinglist, stringstream &ss)
 {
     string path = "";
 
@@ -381,7 +381,7 @@ void load(Layer &layer, stringstream &ss)
     {
         if (!hasJunk(ss))
         {
-            loadFromFile(path, layer);
+            loadFromFile(path, layer, startinglist);
             displayMessage(MSG_LOAD);
         }
         else
@@ -629,7 +629,7 @@ void run(Layer &layer, StartingList &startingList, stringstream &ss)
         displayMessage(MSG_EXECUTE);
 
         /* Revert by loading file */
-        loadFromFile(DATA_PATH, layer);
+        loadFromFile(DATA_PATH, layer, startingList);
     }
     else
     {

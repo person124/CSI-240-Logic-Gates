@@ -59,7 +59,7 @@ int main()
             break;
 
         case LOAD:
-            load(layer, ss);
+            load(layer, startingList, ss);
             break;
 
         case QUIT:
