@@ -4,7 +4,7 @@ Grid::Grid(int w, int h)
 {
     mWidth = w;
     mHeight = h;
-    nullComp = Component("NULL");
+    nullComp = Component();
 
     mGrid = new Component*[mWidth];
     for (int i = 0; i < mWidth; i++)
@@ -114,7 +114,7 @@ void Grid::resize(int newW, int newH)
                 for (int j = 0; j < newH; j++)
                     temp[j] = mGrid[i][j];
                 for (int j = newH; j < mHeight; j++)
-                    delete &mGrid[i][j];
+                    delete [] mGrid[i];
                 mGrid[i] = temp;
             }
         }

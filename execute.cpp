@@ -27,16 +27,16 @@ void invokeGate(Layer& layer, int l, int x, int y, bool charge, char dir)
 
     Component* c = &g->get(x, y);
     bool gCharge = getGateOutput(c->getID(), chargeUp, chargeDown);
-    if (gCharge != c->getCharge())
-    {
-        c->setCharged(gCharge);
-        pokeLoc(layer, l, x + 1, y, gCharge, 'r');
-    }
+    c->setCharged(gCharge);
+    pokeLoc(layer, l, x + 1, y, gCharge, 'l');
 }
 
 void invokeLight(Layer& layer, int l, int x, int y, bool charge)
 {
-    layer.get(l)->get(x, y).setCharged(charge);
+    if (!charge && isAlone(layer, l, x, y))
+        layer.get(l)->get(x, y).setCharged(false);
+    else
+        layer.get(l)->get(x, y).setCharged(charge);
 }
 
 void invokeNot(Layer& layer, int l, int x, int y, bool charge)
@@ -47,8 +47,24 @@ void invokeNot(Layer& layer, int l, int x, int y, bool charge)
 
 void invokeWire(Layer& layer, int l, int x, int y, bool charge)
 {
-    layer.get(l)->get(x, y).setCharged(charge);
+    Grid* g = layer.get(l);
+    Component* c = &g->get(x, y);
+    if (charge && c->getCharge())
+        return;
+    if (!charge)
+    {
+        if (isAlone(layer, l, x, y))
+            return;
+    }
+    c->setCharged(charge);
     poke(layer, l, x, y, charge);
+}
+
+bool isAlone(Layer& layer, int l, int x, int y)
+{
+    Grid* g = layer.get(l);
+    return g->get(x + 1, y).getCharge() || g->get(x - 1, y).getCharge()
+            || g->get(x, y + 1).getCharge() || g->get(x, y - 1).getCharge();
 }
 
 bool isGate(string id)
@@ -68,7 +84,7 @@ void poke(Layer& layer, int l, int x, int y, bool charge)
 void pokeLoc(Layer& layer, int l, int x, int y, bool charge, char dir)
 {
     Component* c = &layer.get(l)->get(x, y);
-    if (c->getID() == "WIRE" && !wireCheck(charge, c->getCharge()))
+    if (c->getID() == "WIRE")
         invokeWire(layer, l, x, y, charge);
     else if (c->getID() == "LIGHT")
         invokeLight(layer, l, x, y, charge);
@@ -76,13 +92,4 @@ void pokeLoc(Layer& layer, int l, int x, int y, bool charge, char dir)
         invokeNot(layer, l, x, y, charge);
     else if ((dir == 'd' || dir == 'u') && isGate(c->getID()))
         invokeGate(layer, l, x, y, charge, dir);
-}
-
-bool wireCheck(bool in, bool out)
-{
-    if (in == out)
-        return true;
-    if (!in && out)
-        return true;
-    return false;
 }

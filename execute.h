@@ -12,9 +12,9 @@ void invokeGate(Layer&, int, int, int, bool, char);
 void invokeLight(Layer&, int, int, int, bool);
 void invokeNot(Layer&, int, int, int, bool);
 void invokeWire(Layer&, int, int, int, bool);
+bool isAlone(Layer&, int, int, int);
 bool isGate(string);
 void poke(Layer&, int, int, int, bool);
 void pokeLoc(Layer&, int, int, int, bool, char);
-bool wireCheck(bool, bool);
 
 #endif
