@@ -72,11 +72,12 @@ enum ComponentType
     XOR,
     XNOR,
     NOT,
+    VERT,
 
     EMPTY
 };
 
-const int    COMPONENT_SIZE = 10;
+const int    COMPONENT_SIZE = 11;
 
 const string COMPONENT_NAME[COMPONENT_SIZE]
 {
@@ -89,7 +90,8 @@ const string COMPONENT_NAME[COMPONENT_SIZE]
     "NOR",
     "XOR",
     "XNOR",
-    "NOT"
+    "NOT",
+    "VERT"
 };
 
 const string COMPONENT_OFF[COMPONENT_SIZE + 1]
@@ -104,6 +106,7 @@ const string COMPONENT_OFF[COMPONENT_SIZE + 1]
     " xor ",
     " xnor",
     " not ",
+    " [+] ",
 
     "  -  "
 };
@@ -120,6 +123,7 @@ const string COMPONENT_ON[COMPONENT_SIZE + 1]
     " XOR ",
     " XNOR",
     " NOT ",
+    " [*] ",
 
     "  -  "
 };

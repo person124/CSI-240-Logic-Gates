@@ -260,7 +260,7 @@ void displayCommands()
 {
     for (int i = 0; i < COMMAND_SIZE; i++)
     {
-        cout << right << setw(15) << COMMAND_NAME[i];
+        cout << right << setw(10) << COMMAND_NAME[i];
     }
     cout << endl << endl;
 }
@@ -275,7 +275,7 @@ void displayComponents()
 {
     for (int i = 0; i < COMPONENT_SIZE; i++)
     {
-        cout << right << setw(15) << COMPONENT_NAME[i];
+        cout << right << setw(10) << COMPONENT_NAME[i];
     }
     cout << endl << endl;
 }
