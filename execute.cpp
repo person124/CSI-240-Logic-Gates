@@ -45,10 +45,26 @@ void invokeNot(Layer& layer, int l, int x, int y, bool charge)
     pokeLoc(layer, l, x + 1, y, !charge, 'l');
 }
 
+void invokeVert(Layer& layer, int l, int x, int y, bool charge)
+{
+    Component* c = &layer.get(l)->get(x, y);
+    if (charge && c->getCharge())
+        return;
+    if (!charge)
+    {
+        if (isAlone(layer, l, x, y))
+            return;
+    }
+    c->setCharged(charge);
+    if (layer.get(l + 1) != NULL)
+        pokeLoc(layer, l + 1, x, y, charge, 'v');
+    if (layer.get(l - 1) != NULL)
+        pokeLoc(layer, l - 1, x, y, charge, 'v');
+}
+
 void invokeWire(Layer& layer, int l, int x, int y, bool charge)
 {
-    Grid* g = layer.get(l);
-    Component* c = &g->get(x, y);
+    Component* c = &layer.get(l)->get(x, y);
     if (charge && c->getCharge())
         return;
     if (!charge)
@@ -88,6 +104,8 @@ void pokeLoc(Layer& layer, int l, int x, int y, bool charge, char dir)
         invokeWire(layer, l, x, y, charge);
     else if (c->getID() == "LIGHT")
         invokeLight(layer, l, x, y, charge);
+    else if (c->getID() == "VERT")
+        invokeVert(layer, l, x, y, charge);
     else if (c->getID() == "NOT" && dir == 'l')
         invokeNot(layer, l, x, y, charge);
     else if ((dir == 'd' || dir == 'u') && isGate(c->getID()))

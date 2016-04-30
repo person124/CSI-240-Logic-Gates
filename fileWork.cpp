@@ -74,6 +74,8 @@ bool saveToFile(string fileName, Layer& layer)
             int y = j / w;
             out << ' ' << getIntFromID(g->get(x, y).getID());
         }
+        if (i + 1 < layer.getCount())
+            out << ' ';
     }
 
     out.close();
