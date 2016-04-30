@@ -1,7 +1,7 @@
-/*
- * Author:          Matthew James Harrison
+/* Author:          Matthew James Harrison
  * Class:           CSI-240-04
- * Date Updated:    04-Mar-16
+ * Date Updated:    April 29, 2016
+ *
  * Description:
  *    A custom namespace for utility functions.
  *
@@ -15,7 +15,7 @@
  *      -   Communicate a copy of this assignment to a plagiarism checking
  *          service (which may then retain a copy of this assignment on its
  *          database for the purpose of future plagiarism checking)
- */
+ ******************************************************************************/
 
 #ifndef UTILITIES_H
 #define UTILITIES_H
