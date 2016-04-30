@@ -58,7 +58,7 @@ string Component::getID(){
 /* Purpose:  To get the output of a Gate
  *     Pre:  Gate operation in caps (AND, OR, XOR) and the inputs as bools
  *    Post:  the returned boolean of that logic operation
- *  Author:  Peter Belsley
+ *  Author:  Peter Belsley (With minor changes by Calum Phillips)
  ******************************************************************************/
 
 bool getGateOutput(string type, bool i1, bool i2){
@@ -71,11 +71,9 @@ bool getGateOutput(string type, bool i1, bool i2){
 	} else if (type == "NOR") {
 		return !(i1 || i2);
 	} else if (type == "XNOR") {
-		return (i1 && !i2) || (!i1 && i2);
+		return i1 == i2;
 	} else if (type == "NAND"){
-		return !getGateOutput("AND", i1, i2);
-	} else if (type == "NOT") {
-		return !i1;
+		return !(i1 && i2);
 	}
 	return false;
 }
